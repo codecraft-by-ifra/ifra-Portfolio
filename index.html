@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Ifra Munawar | MERN Developer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #00fff7;
+      --secondary: #06b6d4;
+      --dark: #0a0a0a;
+      --darker: #050505;
+      --card: #111827;
+    }
+    
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+      color: #fff;
+      overflow-x: hidden;
+    }
+    
+    /* Hide scrollbar */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* Particles background */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      top: 0;
+      left: 0;
+    }
+    
+    /* Glowing elements */
+    .glow {
+      box-shadow: 0 0 15px rgba(0, 255, 247, 0.5);
+      transition: all 0.3s ease;
+    }
+    
+    .glow:hover {
+      box-shadow: 0 0 25px rgba(0, 255, 247, 0.8);
+    }
+    
+    /* Neon effects */
+    .neon-text {
+      color: var(--primary);
+      text-shadow:
+        0 0 5px var(--primary),
+        0 0 10px var(--primary),
+        0 0 20px var(--primary),
+        0 0 40px var(--primary);
+    }
+    
+    .neon-border {
+      border: 2px solid var(--primary);
+      transition: all 0.3s ease;
+    }
+    
+    .neon-border:hover {
+      box-shadow:
+        0 0 5px var(--primary),
+        0 0 10px var(--primary),
+        0 0 20px var(--primary),
+        0 0 40px var(--primary);
+      transform: scale(1.05);
+    }
+    
+    .neon-dot {
+      background-color: var(--primary);
+      box-shadow:
+        0 0 5px var(--primary),
+        0 0 10px var(--primary),
+        0 0 20px var(--primary),
+        0 0 40px var(--primary);
+    }
+    
+    /* Animated gradient border */
+    .gradient-border {
+      position: relative;
+      background: var(--card);
+      border-radius: 1rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: inherit;
+      padding: 2px;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      z-index: -1;
+      animation: rotate 3s linear infinite;
+    }
+    
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Floating animation */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    .floating {
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    /* Section animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    
+    .fade-in.appear {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Project card flip */
+    .project-card {
+      perspective: 1000px;
+      height: 300px;
+    }
+    
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+    
+    .project-card:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+    
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+    
+    .card-back {
+      background: linear-gradient(135deg, var(--card) 0%, #1a202c 100%);
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    
+    /* Form styling */
+    .input-group {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    
+    .input-field {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid var(--primary);
+      padding: 10px 0;
+      color: white;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    
+    .input-label {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      color: rgba(255, 255, 255, 0.7);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    
+    .input-field:focus ~ .input-label,
+    .input-field:valid ~ .input-label {
+      top: -15px;
+      font-size: 0.8rem;
+      color: var(--primary);
+    }
+    
+    .input-field:focus {
+      border-bottom-color: var(--secondary);
+    }
+    
+    /* Scroll progress indicator */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 100;
+    }
+    
+    .progress-bar {
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    
+    /* Wave animation for skill bars */
+    .wave {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(255,255,255,0.2)" d="M0,10 C30,15 50,5 100,10 L100,20 L0,20 Z" /></svg>');
+      background-size: 100% 100%;
+      opacity: 0.3;
+      animation: wave 2s linear infinite;
+    }
+    
+    @keyframes wave {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 100px; }
+    }
+
+     .skills-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 30px;
+      padding: 40px;
+    }
+
+    .skills-column {
+      background: #111827;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(108, 92, 231, 0.1);
+      padding: 35px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skills-column:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(108, 92, 231, 0.2);
+    }
+
+    .skills-column::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, cyan);
+    }
+
+    .column-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 35px;
+    }
+
+    .column-header i {
+      font-size: 2.5rem;
+      color: cyan;
+      margin-right: 18px;
+      background: rgba(108, 92, 231, 0.1);
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .column-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    /* Technical Skills */
+    .skill-item {
+      margin-bottom: 30px;
+      animation: fadeIn 0.6s forwards;
+      opacity: 0;
+    }
+
+    .skill-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .skill-name {
+      font-weight: 600;
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .skill-percent {
+      font-weight: 700;
+      color: cyan;
+      font-size: 1.1rem;
+    }
+
+    .progress-container {
+      height: 14px;
+      background: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, cyan);
+      border-radius: 10px;
+      position: relative;
+      width: 0;
+      transition: width 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(255,255,255,0.3)" d="M0,10 C30,15 50,5 100,10 L100,20 L0,20 Z" /></svg>');
+      background-size: 100% 100%;
+      opacity: 0.6;
+      animation: wave 2s linear infinite;
+    }
+
+    /* Professional Skills */
+    .skill-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+    }
+
+    .skill-card {
+      background: #111827;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #e9ecef;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.15);
+      border-color: #d6d8ff;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, cyan);
+    }
+
+    .skill-card i {
+      font-size: 2.5rem;
+      color: cyan;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .skill-card h3 {
+      font-weight: 600;
+      color: white;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+
+    .skill-value {
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: cyan;
+      display: block;
+      transition: all 0.5s ease;
+    }
+
+    .skill-card:hover .skill-value {
+      transform: scale(1.2);
+      text-shadow: 0 5px 15px rgba(26, 235, 235, 0.3);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes wave {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 100px; }
+    }
+
+   
+
+    /* Responsive Design */
+    @media (max-width: 1100px) {
+      .skills-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .section-header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .section-header p {
+        font-size: 1rem;
+      }
+      
+      .skills-column {
+        padding: 25px;
+      }
+      
+      .skill-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .column-header h2 {
+        font-size: 1.8rem;
+      }
+      
+      .column-header i {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body class="overflow-x-hidden">
+  <!-- Particles background -->
+  <div id="particles-js"></div>
+  
+  
+  
+  <!-- Navbar -->
+ <header class="fixed top-0 left-0 right-0 bg-black bg-opacity-80 backdrop-blur-sm z-50 border-b border-gray-900 transition-all duration-300 h-20">
+  <div class="max-w-7xl mx-auto flex justify-between items-center h-full px-6 sm:px-10 md:px-16">
+    <div class="text-white font-extrabold text-lg sm:text-xl md:text-2xl flex items-center">
+      <span>IFRA</span>
+      <span class="text-cyan-400 ml-1 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] font-extrabold">MUNAWAR</span>
+    </div>
+
+      <nav>
+        <ul class="hidden md:flex space-x-8 text-sm sm:text-base font-semibold">
+  <li><a href="#home" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Home</a></li>
+  <li><a href="#about" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">About</a></li>
+  <li><a href="#education" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Education</a></li>
+  <li><a href="#skills" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Skills</a></li>
+  <li><a href="#project" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Projects</a></li>
+  <li><a href="#contact" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Contact</a></li>
+</ul>
+
+        <button id="nav-toggle" aria-label="Toggle navigation menu" class="md:hidden text-cyan-400 focus:outline-none">
+          <i class="fas fa-bars fa-lg"></i>
+        </button>
+        <ul id="mobile-menu" class="hidden absolute right-6 top-16 bg-black bg-opacity-90 border border-cyan-400 rounded-md py-2 w-40 text-center space-y-2 font-semibold text-cyan-400 z-50">
+          <li><a href="#home" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Home</a></li>
+          <li><a href="#about" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">About</a></li>
+          <li><a href="#education" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Education</a></li>
+          <li><a href="#skills" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Skills</a></li>
+          <li><a href="#project" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Projects</a></li>
+          <li><a href="#contact" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pt-20 scroll-smooth">
+    <!-- Home Section -->
+    <section id="home" class="min-h-screen flex flex-col md:flex-row items-center justify-center px-6 sm:px-10 md:px-16 gap-12 md:gap-24 py-12 md:py-20 max-w-7xl mx-auto">
+      <section class="max-w-xl md:max-w-lg fade-in">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-2">
+          Hi, I'm
+          <span class="text-cyan-400 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] animate-pulse">IFRA MUNAWAR</span>
+        </h1>
+        <h2 class="text-xl sm:text-3xl font-semibold mb-4"> 
+          <span class="text-cyan-400 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] typewriter"> </span>
+        </h2>
+        <p class="text-base sm:text-lg font-medium leading-relaxed mb-8 max-w-md text-gray-300">
+         I build full-stack web apps using MongoDB, Express.js, React.js, and Node.js. I focus on clean code, responsive UI, and scalable backend systems. I enjoy solving real-world problems through modern web technologies.
+        </p>
+        <div class="flex space-x-4 mb-8">
+          <a aria-label="LinkedIn" href="https://www.linkedin.com/in/ifra-munawar-436651357?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a aria-label="GitHub" href="https://github.com/codecraft-by-ifra" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
+            <i class="fab fa-github"></i>
+          </a>
+          <a aria-label="Instagram" href="https://www.instagram.com/codecraft_by_ifrah?igsh=a29kbWo1MmlhaXpz" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a aria-label="Email" href="codecraftbyifrah@gmail.com" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+        <div>
+          <a href="CV.jpg" download class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-cyan-400 to-blue-500 text-black font-semibold drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] hover:brightness-110 transition-all duration-300 transform hover:scale-105">
+            <i class="fas fa-download"></i> Download CV
+          </a>
+        </div>
+      </section>
+      
+      <section class="flex-shrink-0 fade-in">
+  <div class="relative floating">
+    <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 blur-xl opacity-70 animate-pulse"></div>
+    <img
+      alt="Profile image of IFRA"
+      src="pic.png"
+      class="rounded-xl object-cover relative"
+      style="width: 350px; height: 400px;"
+    />
+  </div>
+</section>
+
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="min-h-screen flex flex-col items-center justify-center py-20 px-6 fade-in">
+      <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-16">
+        About <span class="text-cyan-400">Me</span>
+      </h1>
+    
+      <div class="gradient-border max-w-4xl p-1 rounded-xl">
+        <div class="bg-[#111827] rounded-xl p-8 backdrop-blur-sm">
+          <p class="text-lg md:text-xl leading-relaxed mb-6 text-gray-200">
+           I’m Ifra Munawar, a results-driven MERN Stack Developer with a strong foundation in full-stack web development. I specialize in building responsive user interfaces and robust backend systems using React.js, Node.js, Express.js, and MongoDB. 
+            With a focus on clean code and scalable architecture, I’m committed to delivering efficient, high-quality web solutions that align with business goals.
+          </p>
+          
+          <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="gradient-border p-1 rounded-lg">
+              <div class="bg-[#111827] rounded-lg p-4 text-center h-full">
+                <div class="text-cyan-400 text-3xl mb-3">
+                  <i class="fas fa-code"></i>
+                </div>
+                <h3 class="font-bold text-xl mb-2">Clean Code</h3>
+                <p class="text-gray-300">Writing maintainable, efficient code with best practices</p>
+              </div>
+            </div>
+            
+            <div class="gradient-border p-1 rounded-lg">
+              <div class="bg-[#111827] rounded-lg p-4 text-center h-full">
+                <div class="text-cyan-400 text-3xl mb-3">
+                  <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3 class="font-bold text-xl mb-2">API Development</h3>
+                <p class="text-gray-300">Creating secure and efficient RESTful APIs and handling real-time data with ease</p>
+              </div>
+            </div>
+            
+            <div class="gradient-border p-1 rounded-lg">
+              <div class="bg-[#111827] rounded-lg p-4 text-center h-full">
+                <div class="text-cyan-400 text-3xl mb-3">
+                  <i class="fas fa-rocket"></i>
+                </div>
+                <h3 class="font-bold text-xl mb-2">Performance</h3>
+                <p class="text-gray-300">Developing high-performance, scalable web applications optimized for speed and reliability</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="min-h-screen py-20 px-6 fade-in">
+      <div class="max-w-5xl mx-auto">
+        <h1 class="text-white font-extrabold text-5xl text-center mb-16">
+          Education
+        </h1>
+    
+        <div class="relative flex flex-col items-center">
+          <!-- Vertical timeline line -->
+          <div class="absolute top-0 bottom-0 left-1/2 w-[2px] bg-gradient-to-b from-transparent via-cyan-400 to-transparent opacity-70"></div>
+    
+          <!-- 2019 - High School -->
+          <div class="flex w-full max-w-4xl justify-start mb-20 relative">
+            <div class="flex flex-col items-center absolute left-1/2 -translate-x-1/2">
+              <div class="neon-dot w-5 h-5 rounded-full mb-1 animate-pulse"></div>
+              <span class="text-sm font-bold text-white mb-0.5">2019</span>
+            </div>
+            <div class="gradient-border max-w-[380px] ml-auto cursor-pointer">
+              <div class="bg-[#111827] rounded-xl p-6">
+                <h3 class="font-bold text-xl text-white mb-3">Govt. MC Girls High School</h3>
+                <p class="text-gray-300 leading-relaxed">
+                  I completed my Matriculation in Science, where I built a basic understanding of core science subjects.
+                </p>
+              </div>
+            </div>
+          </div>
+    
+          <!-- 2021 - College -->
+          <div class="flex w-full max-w-4xl justify-end mb-20 relative">
+            <div class="flex flex-col items-center absolute left-1/2 -translate-x-1/2">
+              <div class="neon-dot w-5 h-5 rounded-full mb-1 animate-pulse"></div>
+              <span class="text-sm font-bold text-white mb-0.5">2021</span>
+            </div>
+            <div class="gradient-border max-w-[380px] mr-auto cursor-pointer">
+              <div class="bg-[#111827] rounded-xl p-6">
+                <h3 class="font-bold text-xl text-white mb-3">PIASS</h3>
+                <p class="text-gray-300 leading-relaxed">
+                 I pursued Intermediate in Pre-Engineering, focusing on subjects like Mathematics, Physics, and Chemistry.
+This phase built my analytical thinking and sparked my passion for programming and technology.
+                </p>
+              </div>
+            </div>
+          </div>
+    
+          <!-- 2025 - University -->
+          <div class="flex w-full max-w-4xl justify-start mb-20 relative">
+            <div class="flex flex-col items-center absolute left-1/2 -translate-x-1/2">
+              <div class="neon-dot w-5 h-5 rounded-full mb-1 animate-pulse"></div>
+              <span class="text-sm font-bold text-white mb-0.5">2025</span>
+            </div>
+            <div class="gradient-border max-w-[380px] ml-auto cursor-pointer">
+              <div class="bg-[#111827] rounded-xl p-6">
+                <h3 class="font-bold text-xl text-white mb-3">GCUF</h3>
+                <p class="text-gray-300 leading-relaxed">
+                  I earned my BS in Computer Science, where I explored software engineering, databases, and mobile app development.
+                  This experience shaped me into a professional MERN developer.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 px-6 fade-in">
+      <div class="max-w-6xl mx-auto">
+        <h1 class="text-5xl font-extrabold text-center mb-16">
+          My <span class="text-cyan-400">Skills</span>
+        </h1>
+        
+        <div class="flex flex-wrap justify-between gap-8 px-4">
+          <!-- Technical Skills -->
+        <div class="skills-column" style="flex: 1 1 48%;">
+    <div class="column-header">
+      <i class="fas fa-code"></i>
+      <h2>Technical Skills</h2>
+    </div>
+          
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Frontend</span>
+              <span class="skill-percent">92%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" style="width: 92%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">backend</span>
+              <span class="skill-percent">72%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" style="width: 72%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Javascript Programming</span>
+              <span class="skill-percent">90%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" style="width: 90%"></div>
+            </div>
+          </div>
+          
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Bycript</span>
+              <span class="skill-percent">80%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" style="width: 80%"></div>
+            </div>
+          </div>
+          
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">MVC Architecture</span>
+              <span class="skill-percent">62%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" style="width: 62%"></div>
+            </div>
+          </div>
+        </div>
+          
+          <!-- Professional Skills -->
+          <div class="skills-column" style="flex: 1 1 48%;">
+    <div class="column-header">
+      <i class="fas fa-user-tie"></i>
+      <h2>Professional Skills</h2>
+    </div>
+          
+          <div class="skill-cards">
+            <div class="skill-card">
+              <i class="fas fa-users"></i>
+              <h3>Team Work</h3>
+              <span class="skill-value">90%</span>
+            </div>
+            
+            <div class="skill-card">
+              <i class="fas fa-lightbulb"></i>
+              <h3>Creativity</h3>
+              <span class="skill-value">80%</span>
+            </div>
+            
+            <div class="skill-card">
+              <i class="fas fa-tasks"></i>
+              <h3>Project Management</h3>
+              <span class="skill-value">55%</span>
+            </div>
+            
+            <div class="skill-card">
+              <i class="fas fa-comments"></i>
+              <h3>Communication</h3>
+              <span class="skill-value">70%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- Projects Section -->
+    <section id="project" class="py-20 px-6 fade-in">
+      <div class="max-w-6xl mx-auto">
+        <h1 class="text-5xl font-extrabold text-center mb-16">
+          My <span class="text-cyan-400">Projects</span>
+        </h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Project 1 -->
+          <div class="project-card">
+            <div class="card-inner">
+              <div class="card-front gradient-border h-full">
+                <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col">
+                  <div class="w-16 h-16 rounded-full flex items-center justify-center bg-cyan-400 text-black mb-4 mx-auto">
+                    <i class="fas fa-car text-2xl"></i>
+                  </div>
+                  <h3 class="text-xl font-bold text-center mb-3">Event Registeration System</h3>
+                  <div class="text-yellow-400 mb-3 space-x-0.5 flex justify-center">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <p class="text-gray-300 text-center">
+                    "A smart web-based system to manage event registrations and attendee details.."
+                  </p>
+                  <div class="mt-auto pt-4 text-center">
+                    <span class="text-cyan-400 text-sm font-medium">Tap for details</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card-back">
+                <h3 class="text-xl font-bold mb-3">Event Registeration System</h3>
+                <p class="text-gray-300 mb-4">
+                  A smart web platform to manage event registrations, track attendees, and streamline scheduling — all in one place.
+Built with HTML, CSS, JavaScript, Node.js, and MongoDB, focusing on real-time data and intuitive admin control.
+Designed to simplify event management with a modern and responsive interface.
+                </p>
+                <div class="flex space-x-2 mt-auto">
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Node.js</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Express.js</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">MongoDB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Project 2 -->
+          <div class="project-card">
+            <div class="card-inner">
+              <div class="card-front gradient-border h-full">
+                <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col">
+                  <div class="w-16 h-16 rounded-full flex items-center justify-center bg-cyan-400 text-black mb-4 mx-auto">
+                    <i class="fas fa-calendar-alt text-2xl"></i>
+                  </div>
+                  <h3 class="text-xl font-bold text-center mb-3">Smart Lecture System</h3>
+                  <div class="text-yellow-400 mb-3 space-x-0.5 flex justify-center">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <p class="text-gray-300 text-center">
+                    A smart web-based system to manage lecture timetables, teacher schedules, and announcements efficiently.
+                  </p>
+                  <div class="mt-auto pt-4 text-center">
+                    <span class="text-cyan-400 text-sm font-medium">Tap for details</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card-back">
+                <h3 class="text-xl font-bold mb-3">Smart Lecture System</h3>
+                <p class="text-gray-300 mb-4">
+                  A smart web platform to manage lecture scheduling, teacher timetables, and announcements — all in one place.
+Built with HTML, CSS, JavaScript, Node.js, Express.js, and MongoDB.
+Designed to simplify academic scheduling with a clean UI and real-time data handling.
+                </p>
+                <div class="flex space-x-2 mt-auto">
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">MVC</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Bycript</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">RESTful APIs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Project 3 -->
+          <div class="project-card">
+            <div class="card-inner">
+              <div class="card-front gradient-border h-full">
+                <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col">
+                  <div class="w-16 h-16 rounded-full flex items-center justify-center bg-cyan-400 text-black mb-4 mx-auto">
+                    <i class="fas fa-running text-2xl"></i>
+                  </div>
+                  <h3 class="text-xl font-bold text-center mb-3">Sports Registeration System</h3>
+                  <div class="text-yellow-400 mb-3 space-x-0.5 flex justify-center">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <p class="text-gray-300 text-center">
+                    A smart web-based system to register players, manage sports events, and track participation seamlessl
+                  </p>
+                  <div class="mt-auto pt-4 text-center">
+                    <span class="text-cyan-400 text-sm font-medium">Tap for details</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card-back">
+                <h3 class="text-xl font-bold mb-3">Sports Registeration System</h3>
+                <p class="text-gray-300 mb-4">
+                  A smart web platform to handle sports event registrations, player profiles, and team management — all in one place.
+Built with HTML, CSS, JavaScript, Node.js, and MongoDB.
+Designed to streamline sports event coordination with a modern and responsive interface.
+                </p>
+                <div class="flex space-x-2 mt-auto">
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Node.js</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">MongoDB</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">REST API</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-6 fade-in">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="text-5xl font-extrabold text-center mb-4">
+          Contact <span class="text-cyan-400">Me</span>
+        </h1>
+        <p class="text-center text-gray-400 mb-16 max-w-2xl mx-auto">
+          Have a project in mind or want to discuss opportunities? Feel free to reach out!
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div class="gradient-border">
+            <div class="bg-[#111827] rounded-xl p-8 h-full">
+              <h2 class="text-2xl font-bold mb-6">Get in Touch</h2>
+              
+              <div class="space-y-6">
+                <div class="flex items-start">
+                  <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
+                    <i class="fas fa-envelope text-cyan-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold">Email</h3>
+                    <p class="text-gray-400">codecraftbyifrah@gmail.com</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-start">
+                  <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
+                    <i class="fab fa-linkedin-in text-cyan-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold">LinkedIn</h3>
+                    <p class="text-gray-400">linkedin.com/in/Ifra Munawar</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-start">
+                  <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
+                    <i class="fab fa-github text-cyan-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold">GitHub</h3>
+                    <p class="text-gray-400">github.com/codecraft-by-ifra</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-start">
+                  <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
+                    <i class="fab fa-instagram text-cyan-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold">Instagram</h3>
+                    <p class="text-gray-400">codecraft_by_ifrah</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-10 pt-6 border-t border-gray-800">
+                <h3 class="font-semibold mb-4">Based in</h3>
+                <div class="flex items-center">
+                  <i class="fas fa-map-marker-alt text-cyan-400 mr-3"></i>
+                  <p class="text-gray-400">Kasur, Pakistan</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="gradient-border">
+            <div class="bg-[#111827] rounded-xl p-8 h-full">
+              <h2 class="text-2xl font-bold mb-6">Send a Message</h2>
+              
+              <form action="mailto:saadali23495097@gmail.com" method="POST" enctype="text/plain" autocomplete="off">
+                <div class="input-group">
+                  <input type="text" class="input-field" required>
+                  <label class="input-label">Full Name</label>
+                </div>
+                
+                <div class="input-group">
+                  <input type="email" class="input-field" required>
+                  <label class="input-label">Email</label>
+                </div>
+                
+                <div class="input-group">
+                  <input type="text" class="input-field">
+                  <label class="input-label">Subject</label>
+                </div>
+                
+                <div class="input-group">
+                  <textarea class="input-field" rows="4" required></textarea>
+                  <label class="input-label">Your Message</label>
+                </div>
+                
+                <button type="submit" class="w-full mt-2 bg-cyan-400 to-blue-500 text-black font-bold py-3 rounded-lg hover:brightness-110 transition-all duration-300 transform hover:scale-[1.02]">
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+ <footer class="bg-black bg-opacity-50 border-t border-gray-800 py-4">
+  <div class="mt-4 text-center text-gray-500 text-sm">
+    <p>© 2023 Ifra Munawar. All rights reserved.</p>
+    <p class="mt-1">Crafted with <i class="fas fa-heart text-cyan-400"></i> for MERN Developer</p>
+  </div>
+</footer>
+
+  <!-- Back to top button -->
+  <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-cyan-400 text-black flex items-center justify-center shadow-lg transform transition hover:scale-110 hidden">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    // Particles.js config
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: "#00fff7" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5, random: true },
+        size: { value: 3, random: true },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#00fff7",
+          opacity: 0.2,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: "none",
+          random: true,
+          straight: false,
+          out_mode: "out",
+          bounce: false
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "push" }
+        },
+        modes: {
+          grab: { distance: 140, line_linked: { opacity: 0.5 } },
+          push: { particles_nb: 4 }
+        }
+      },
+      retina_detect: true
+    });
+    
+    // Scroll progress indicator
+    const progressBar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (window.pageYOffset / totalHeight) * 100;
+      progressBar.style.width = `${progress}%`;
+    });
+    
+    // Back to top button
+    const backToTopBtn = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.remove('hidden');
+      } else {
+        backToTopBtn.classList.add('hidden');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    // Mobile menu toggle
+    const navToggle = document.getElementById("nav-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    
+    navToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+    
+    // Close mobile menu on link click
+    mobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.add("hidden");
+      });
+    });
+    
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+    
+    // Scroll animations
+    const fadeElements = document.querySelectorAll('.fade-in');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('appear');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    fadeElements.forEach(element => {
+      observer.observe(element);
+    });
+    
+    // Typewriter effect
+    const typewriter = document.querySelector('.typewriter');
+    const text = "MERN Developer";
+    let index = 0;
+    
+    function type() {
+      if (index < text.length) {
+        typewriter.textContent += text.charAt(index);
+        index++;
+        setTimeout(type, 100);
+      } else {
+        setTimeout(() => {
+          typewriter.textContent = "";
+          index = 0;
+          type();
+        }, 2000);
+      }
+    }
+    
+    setTimeout(type, 1000);
+    
+    // Nav link active state
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    window.addEventListener('scroll', () => {
+      let current = '';
+      
+      document.querySelectorAll('section').forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (pageYOffset >= sectionTop - sectionHeight / 3) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').substring(1) === current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
