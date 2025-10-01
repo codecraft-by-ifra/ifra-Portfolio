@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <title>Ifra Munawar | MERN Developer</title>
+  <title>Ifra Munawar | Full Stack Developer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -137,7 +137,7 @@
     /* Project card flip */
     .project-card {
       perspective: 1000px;
-      height: 300px;
+      height: 450px;
     }
     
     .card-inner {
@@ -169,6 +169,46 @@
       flex-direction: column;
       justify-content: center;
       padding: 1.5rem;
+    }
+    
+    /* Certificate card flip */
+    .certificate-card {
+      perspective: 1000px;
+      height: 430px;
+      width: 70%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .certificate-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+    
+    .certificate-card:hover .certificate-inner {
+      transform: rotateY(180deg);
+    }
+    
+    .certificate-front, .certificate-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+    
+    .certificate-back {
+      background: linear-gradient(135deg, var(--card) 0%, #1a202c 100%);
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem;
     }
     
     /* Form styling */
@@ -429,7 +469,29 @@
       100% { background-position-x: 100px; }
     }
 
-   
+    /* Certificate Section Styles */
+    .certificate-container {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .certificate-front {
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .certificate-front img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 0.5rem;
+    }
 
     /* Responsive Design */
     @media (max-width: 1100px) {
@@ -438,7 +500,7 @@
       }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       .section-header h1 {
         font-size: 2.5rem;
       }
@@ -464,6 +526,38 @@
         height: 60px;
         font-size: 2rem;
       }
+      
+      .certificate-card {
+        height: 350px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .certificate-card {
+        height: 300px;
+      }
+      
+      .certificate-back {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .certificate-card {
+        height: 280px;
+      }
+      
+      .certificate-back {
+        padding: 1rem;
+      }
+      
+      .certificate-back h3 {
+        font-size: 1.3rem;
+      }
+      
+      .certificate-back p {
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
@@ -471,25 +565,24 @@
   <!-- Particles background -->
   <div id="particles-js"></div>
   
-  
-  
   <!-- Navbar -->
- <header class="fixed top-0 left-0 right-0 bg-black bg-opacity-80 backdrop-blur-sm z-50 border-b border-gray-900 transition-all duration-300 h-20">
-  <div class="max-w-7xl mx-auto flex justify-between items-center h-full px-6 sm:px-10 md:px-16">
-    <div class="text-white font-extrabold text-lg sm:text-xl md:text-2xl flex items-center">
-      <span>IFRA</span>
-      <span class="text-cyan-400 ml-1 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] font-extrabold">MUNAWAR</span>
-    </div>
+  <header class="fixed top-0 left-0 right-0 bg-black bg-opacity-80 backdrop-blur-sm z-50 border-b border-gray-900 transition-all duration-300 h-20">
+    <div class="max-w-7xl mx-auto flex justify-between items-center h-full px-6 sm:px-10 md:px-16">
+      <div class="text-white font-extrabold text-lg sm:text-xl md:text-2xl flex items-center">
+        <span>IFRA</span>
+        <span class="text-cyan-400 ml-1 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] font-extrabold">MUNAWAR</span>
+      </div>
 
       <nav>
         <ul class="hidden md:flex space-x-8 text-sm sm:text-base font-semibold">
-  <li><a href="#home" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Home</a></li>
-  <li><a href="#about" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">About</a></li>
-  <li><a href="#education" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Education</a></li>
-  <li><a href="#skills" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Skills</a></li>
-  <li><a href="#project" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Projects</a></li>
-  <li><a href="#contact" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Contact</a></li>
-</ul>
+          <li><a href="#home" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Home</a></li>
+          <li><a href="#about" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">About</a></li>
+          <li><a href="#education" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Education</a></li>
+          <li><a href="#skills" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Skills</a></li>
+          <li><a href="#project" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Projects</a></li>
+          <li><a href="#certificates" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Certificates</a></li>
+          <li><a href="#contact" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Contact</a></li>
+        </ul>
 
         <button id="nav-toggle" aria-label="Toggle navigation menu" class="md:hidden text-cyan-400 focus:outline-none">
           <i class="fas fa-bars fa-lg"></i>
@@ -500,6 +593,7 @@
           <li><a href="#education" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Education</a></li>
           <li><a href="#skills" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Skills</a></li>
           <li><a href="#project" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Projects</a></li>
+          <li><a href="#certificates" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Certificates</a></li>
           <li><a href="#contact" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Contact</a></li>
         </ul>
       </nav>
@@ -518,8 +612,7 @@
           <span class="text-cyan-400 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] typewriter"> </span>
         </h2>
         <p class="text-base sm:text-lg font-medium leading-relaxed mb-8 max-w-md text-gray-300">
-         I build full-stack web apps using MongoDB, Express.js, React.js, and Node.js. I focus on clean code, responsive UI, and scalable backend systems. I enjoy solving real-world problems through modern web technologies.
-        </p>
+        I create responsive, scalable web applications using MongoDB, Express.js, React.js, and Node.js. With expertise in modern web technologies and a focus on clean code architecture, I build efficient solutions for real-world challenges. Currently expanding into AI research with focus on federated learning and autonomous systems.</p>
         <div class="flex space-x-4 mb-8">
           <a aria-label="LinkedIn" href="https://www.linkedin.com/in/ifra-munawar-436651357?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
             <i class="fab fa-linkedin-in"></i>
@@ -530,7 +623,7 @@
           <a aria-label="Instagram" href="https://www.instagram.com/codecraft_by_ifrah?igsh=a29kbWo1MmlhaXpz" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
             <i class="fab fa-instagram"></i>
           </a>
-          <a aria-label="Email" href="codecraftbyifrah@gmail.com" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
+          <a aria-label="Email" href="mailto:codecraftbyifrah@gmail.com" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
             <i class="fas fa-envelope"></i>
           </a>
         </div>
@@ -542,17 +635,16 @@
       </section>
       
       <section class="flex-shrink-0 fade-in">
-  <div class="relative floating">
-    <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 blur-xl opacity-70 animate-pulse"></div>
-    <img
-      alt="Profile image of IFRA"
-      src="pic.png"
-      class="rounded-xl object-cover relative"
-      style="width: 350px; height: 400px;"
-    />
-  </div>
-</section>
-
+        <div class="relative floating">
+          <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 blur-xl opacity-70 animate-pulse"></div>
+          <img
+            alt="Profile image of IFRA"
+            src="pic.png"
+            class="rounded-xl object-cover relative"
+            style="width: 350px; height: 400px;"
+          />
+        </div>
+      </section>
     </section>
 
     <!-- About Section -->
@@ -564,8 +656,7 @@
       <div class="gradient-border max-w-4xl p-1 rounded-xl">
         <div class="bg-[#111827] rounded-xl p-8 backdrop-blur-sm">
           <p class="text-lg md:text-xl leading-relaxed mb-6 text-gray-200">
-           I’m Ifra Munawar, a results-driven MERN Stack Developer with a strong foundation in full-stack web development. I specialize in building responsive user interfaces and robust backend systems using React.js, Node.js, Express.js, and MongoDB. 
-            With a focus on clean code and scalable architecture, I’m committed to delivering efficient, high-quality web solutions that align with business goals.
+            I'm Ifra Munawar, a passionate researcher and developer specializing in Artificial Intelligence and Distributed Systems. My current research focuses on Federated Learning, Multi-Agent Reinforcement Learning, and privacy-preserving machine learning for autonomous systems. With a strong foundation in full-stack development and a growing expertise in AI algorithms, I bridge the gap between theoretical research and practical implementation. I'm particularly interested in developing communication-efficient frameworks that enable collaborative intelligence while ensuring data privacy and system safety.
           </p>
           
           <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -574,8 +665,8 @@
                 <div class="text-cyan-400 text-3xl mb-3">
                   <i class="fas fa-code"></i>
                 </div>
-                <h3 class="font-bold text-xl mb-2">Clean Code</h3>
-                <p class="text-gray-300">Writing maintainable, efficient code with best practices</p>
+                <h3 class="font-bold text-xl mb-2">ML Architecture</h3>
+                <p class="text-gray-300">Building scalable machine learning infrastructures with clean, maintainable code practices</p>
               </div>
             </div>
             
@@ -584,8 +675,8 @@
                 <div class="text-cyan-400 text-3xl mb-3">
                   <i class="fas fa-mobile-alt"></i>
                 </div>
-                <h3 class="font-bold text-xl mb-2">API Development</h3>
-                <p class="text-gray-300">Creating secure and efficient RESTful APIs and handling real-time data with ease</p>
+                <h3 class="font-bold text-xl mb-2">Algorithm & System Design</h3>
+                <p class="text-gray-300">Designing robust architectures and RESTful APIs, with a growing focus on distributed AI systems and multi-agent communication.</p>
               </div>
             </div>
             
@@ -594,8 +685,8 @@
                 <div class="text-cyan-400 text-3xl mb-3">
                   <i class="fas fa-rocket"></i>
                 </div>
-                <h3 class="font-bold text-xl mb-2">Performance</h3>
-                <p class="text-gray-300">Developing high-performance, scalable web applications optimized for speed and reliability</p>
+                <h3 class="font-bold text-xl mb-2">Performance Optimization</h3>
+                <p class="text-gray-300">Developing high-performance applications, skilled at identifying bottlenecks and optimizing for speed and computational efficiency.</p>
               </div>
             </div>
           </div>
@@ -676,97 +767,99 @@ This phase built my analytical thinking and sparked my passion for programming a
         
         <div class="flex flex-wrap justify-between gap-8 px-4">
           <!-- Technical Skills -->
-        <div class="skills-column" style="flex: 1 1 48%;">
-    <div class="column-header">
-      <i class="fas fa-code"></i>
-      <h2>Technical Skills</h2>
-    </div>
+          <div class="skills-column" style="flex: 1 1 48%;">
+            <div class="column-header">
+              <i class="fas fa-code"></i>
+              <h2>Technical Skills</h2>
+            </div>
           
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">Frontend</span>
-              <span class="skill-percent">92%</span>
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Frontend</span>
+                <span class="skill-percent">92%</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar" style="width: 92%"></div>
+              </div>
             </div>
-            <div class="progress-container">
-              <div class="progress-bar" style="width: 92%"></div>
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">backend</span>
+                <span class="skill-percent">72%</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar" style="width: 72%"></div>
+              </div>
             </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">backend</span>
-              <span class="skill-percent">72%</span>
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Federated Learning & Distributed AI</span>
+                <span class="skill-percent">90%</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar" style="width: 90%"></div>
+              </div>
             </div>
-            <div class="progress-container">
-              <div class="progress-bar" style="width: 72%"></div>
+            
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Differential Privacy & Secure ML</span>
+                <span class="skill-percent">80%</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar" style="width: 80%"></div>
+              </div>
             </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">Javascript Programming</span>
-              <span class="skill-percent">90%</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" style="width: 90%"></div>
+            
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">Multi-Agent Reinforcement Learning (MARL)</span>
+                <span class="skill-percent">62%</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar" style="width: 62%"></div>
+              </div>
             </div>
           </div>
           
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">Bycript</span>
-              <span class="skill-percent">80%</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" style="width: 80%"></div>
-            </div>
-          </div>
-          
-          <div class="skill-item">
-            <div class="skill-info">
-              <span class="skill-name">MVC Architecture</span>
-              <span class="skill-percent">62%</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" style="width: 62%"></div>
-            </div>
-          </div>
-        </div>
           
           <!-- Professional Skills -->
           <div class="skills-column" style="flex: 1 1 48%;">
-    <div class="column-header">
-      <i class="fas fa-user-tie"></i>
-      <h2>Professional Skills</h2>
-    </div>
+            <div class="column-header">
+              <i class="fas fa-user-tie"></i>
+              <h2>Professional Skills</h2>
+            </div>
           
-          <div class="skill-cards">
-            <div class="skill-card">
-              <i class="fas fa-users"></i>
-              <h3>Team Work</h3>
-              <span class="skill-value">90%</span>
-            </div>
-            
-            <div class="skill-card">
-              <i class="fas fa-lightbulb"></i>
-              <h3>Creativity</h3>
-              <span class="skill-value">80%</span>
-            </div>
-            
-            <div class="skill-card">
-              <i class="fas fa-tasks"></i>
-              <h3>Project Management</h3>
-              <span class="skill-value">55%</span>
-            </div>
-            
-            <div class="skill-card">
-              <i class="fas fa-comments"></i>
-              <h3>Communication</h3>
-              <span class="skill-value">70%</span>
+            <div class="skill-cards">
+              <div class="skill-card">
+                <i class="fas fa-users"></i>
+                <h3>Research & Analytical Thinking</h3>
+                <span class="skill-value">90%</span>
+              </div>
+              
+              <div class="skill-card">
+                <i class="fas fa-lightbulb"></i>
+                <h3>Problem-Solving & Innovation</h3>
+                <span class="skill-value">80%</span>
+              </div>
+              
+              <div class="skill-card">
+                <i class="fas fa-tasks"></i>
+                <h3>Technical Communication</h3>
+                <span class="skill-value">75%</span>
+              </div>
+              
+              <div class="skill-card">
+                <i class="fas fa-comments"></i>
+                <h3>Teamwork & Collaboration</h3>
+                <span class="skill-value">70%</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
+
     <!-- Projects Section -->
     <section id="project" class="py-20 px-6 fade-in">
       <div class="max-w-6xl mx-auto">
@@ -774,26 +867,17 @@ This phase built my analytical thinking and sparked my passion for programming a
           My <span class="text-cyan-400">Projects</span>
         </h1>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <!-- Project 1 -->
           <div class="project-card">
             <div class="card-inner">
               <div class="card-front gradient-border h-full">
-                <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col">
-                  <div class="w-16 h-16 rounded-full flex items-center justify-center bg-cyan-400 text-black mb-4 mx-auto">
-                    <i class="fas fa-car text-2xl"></i>
+                <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col items-center justify-center">
+                  <div class="w-full h-100 mb-4 overflow-hidden rounded-lg">
+                    <img src="smart.jpg" alt="Smart Lecture System" class="w-full h-full object-cover">
                   </div>
-                  <h3 class="text-xl font-bold text-center mb-3">Event Registeration System</h3>
-                  <div class="text-yellow-400 mb-3 space-x-0.5 flex justify-center">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
-                  <p class="text-gray-300 text-center">
-                    "A smart web-based system to manage event registrations and attendee details.."
-                  </p>
+                  <h1 class="text-3xl font-bold text-center mb-3">Smart Lecture System</h1>
+                 
                   <div class="mt-auto pt-4 text-center">
                     <span class="text-cyan-400 text-sm font-medium">Tap for details</span>
                   </div>
@@ -801,17 +885,18 @@ This phase built my analytical thinking and sparked my passion for programming a
               </div>
               
               <div class="card-back">
-                <h3 class="text-xl font-bold mb-3">Event Registeration System</h3>
+                <h3 class="text-3xl font-bold mb-3">Smart Lecture System</h3>
                 <p class="text-gray-300 mb-4">
-                  A smart web platform to manage event registrations, track attendees, and streamline scheduling — all in one place.
-Built with HTML, CSS, JavaScript, Node.js, and MongoDB, focusing on real-time data and intuitive admin control.
-Designed to simplify event management with a modern and responsive interface.
+                 A sophisticated web application built with a modern tech stack to centralize academic timetable management. It enables administrators and faculty to create, update, and manage lecture schedules with conflict-free allocation and real-time updates. With integrated announcements, notifications, and reporting, the system delivers an intelligent and data-driven scheduling experience for modern educational environments.</p> 
                 </p>
-                <div class="flex space-x-2 mt-auto">
+                <div class="flex space-x-2 mt-4">
                   <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Node.js</span>
                   <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Express.js</span>
                   <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">MongoDB</span>
                 </div>
+                <a href="https://github.com/codecraft-by-ifra/Smart-Lecture-System.git" target="_blank" class="mt-4 inline-flex items-center justify-center gap-2 px-4 py-2 bg-cyan-400 text-black font-semibold rounded-lg hover:brightness-110 transition-all duration-300">
+                  <i class="fab fa-github"></i> View on GitHub
+                </a>
               </div>
             </div>
           </div>
@@ -820,21 +905,11 @@ Designed to simplify event management with a modern and responsive interface.
           <div class="project-card">
             <div class="card-inner">
               <div class="card-front gradient-border h-full">
-                <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col">
-                  <div class="w-16 h-16 rounded-full flex items-center justify-center bg-cyan-400 text-black mb-4 mx-auto">
-                    <i class="fas fa-calendar-alt text-2xl"></i>
+                <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col items-center justify-center">
+                  <div class="w-full h-100 mb-4 overflow-hidden rounded-lg">
+                    <img src="car.jpg" alt="Car Care App" class="w-full h-full object-cover">
                   </div>
-                  <h3 class="text-xl font-bold text-center mb-3">Smart Lecture System</h3>
-                  <div class="text-yellow-400 mb-3 space-x-0.5 flex justify-center">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
-                  <p class="text-gray-300 text-center">
-                    A smart web-based system to manage lecture timetables, teacher schedules, and announcements efficiently.
-                  </p>
+                 <h1 class="text-3xl font-bold text-center mb-3">Car Care App</h1>
                   <div class="mt-auto pt-4 text-center">
                     <span class="text-cyan-400 text-sm font-medium">Tap for details</span>
                   </div>
@@ -842,57 +917,78 @@ Designed to simplify event management with a modern and responsive interface.
               </div>
               
               <div class="card-back">
-                <h3 class="text-xl font-bold mb-3">Smart Lecture System</h3>
+                <h1 class="text-3xl font-bold mb-3">Car Care App</h1>
                 <p class="text-gray-300 mb-4">
-                  A smart web platform to manage lecture scheduling, teacher timetables, and announcements — all in one place.
-Built with HTML, CSS, JavaScript, Node.js, Express.js, and MongoDB.
-Designed to simplify academic scheduling with a clean UI and real-time data handling.
+                  A sophisticated Android application engineered to provide a centralized platform for vehicle management, built with a modern tech stack and a privacy-conscious architecture.To provide car owners with a one-stop solution for maintenance, fuel tracking, and roadside support  all within a clean, intelligent, and data-driven mobile experience.
                 </p>
-                <div class="flex space-x-2 mt-auto">
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">MVC</span>
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Bycript</span>
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">RESTful APIs</span>
+                <div class="flex space-x-2 mt-4">
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">MVVM</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Firestore</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Kotlin</span>
+                </div>
+                <a href="https://github.com/SaadALi078/CarCareApp" target="_blank" class="mt-4 inline-flex items-center justify-center gap-2 px-4 py-2 bg-cyan-400 text-black font-semibold rounded-lg hover:brightness-110 transition-all duration-300">
+                  <i class="fab fa-github"></i> View on GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certificates Section -->
+    <section id="certificates" class="py-20 px-6 fade-in">
+      <div class="max-w-6xl mx-auto">
+        <h1 class="text-5xl font-extrabold text-center mb-16">
+          My <span class="text-cyan-400">Certificates</span>
+        </h1>
+        
+        <div class="certificate-container">
+          <!-- Certificate 1 -->
+          <div class="certificate-card gradient-border">
+            <div class="certificate-inner">
+              <div class="certificate-front">
+                <img src="data science.jpg" alt="Data Science 101 Certificate">
+              </div>
+              
+              <div class="certificate-back">
+                <h3 class="text-2xl font-bold mb-4">Data Science 101 - IBM</h3>
+                <p class="text-gray-300 mb-4">
+                  Building on my software development background, I completed IBM's Data Science 101 certification to strengthen my analytical foundation. This course provided essential skills in data manipulation, statistical analysis, and machine learning concepts that complement my practical development experience and support my transition into AI research.
+                </p>
+                <div class="flex space-x-2 mt-4">
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Data Science</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">IBM</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Machine Learning</span>
+                </div>
+                <div class="mt-4 text-sm text-gray-400">
+                  <p>Issued: March 03, 2025</p>
+                  <p>Certificate ID: DSO101EN-AAA00003-A445</p>
                 </div>
               </div>
             </div>
           </div>
           
-          <!-- Project 3 -->
-          <div class="project-card">
-            <div class="card-inner">
-              <div class="card-front gradient-border h-full">
-                <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col">
-                  <div class="w-16 h-16 rounded-full flex items-center justify-center bg-cyan-400 text-black mb-4 mx-auto">
-                    <i class="fas fa-running text-2xl"></i>
-                  </div>
-                  <h3 class="text-xl font-bold text-center mb-3">Sports Registeration System</h3>
-                  <div class="text-yellow-400 mb-3 space-x-0.5 flex justify-center">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
-                  <p class="text-gray-300 text-center">
-                    A smart web-based system to register players, manage sports events, and track participation seamlessl
-                  </p>
-                  <div class="mt-auto pt-4 text-center">
-                    <span class="text-cyan-400 text-sm font-medium">Tap for details</span>
-                  </div>
-                </div>
+          <!-- Certificate 2 -->
+          <div class="certificate-card gradient-border">
+            <div class="certificate-inner">
+              <div class="certificate-front">
+                <img src="tensorflow.jpg" alt="TensorFlow Certificate">
               </div>
               
-              <div class="card-back">
-                <h3 class="text-xl font-bold mb-3">Sports Registeration System</h3>
+              <div class="certificate-back">
+                <h3 class="text-2xl font-bold mb-4">TensorFlow Developer Certificate</h3>
                 <p class="text-gray-300 mb-4">
-                  A smart web platform to handle sports event registrations, player profiles, and team management — all in one place.
-Built with HTML, CSS, JavaScript, Node.js, and MongoDB.
-Designed to streamline sports event coordination with a modern and responsive interface.
+                  Earned the TensorFlow Developer Certificate demonstrating proficiency in building and training neural networks using TensorFlow. This certification validates my skills in developing machine learning models for computer vision, natural language processing, and time series analysis.
                 </p>
-                <div class="flex space-x-2 mt-auto">
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Node.js</span>
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">MongoDB</span>
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">REST API</span>
+                <div class="flex space-x-2 mt-4">
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">TensorFlow</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Deep Learning</span>
+                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Neural Networks</span>
+                </div>
+                <div class="mt-4 text-sm text-gray-400">
+                  <p>Issued: December 16, 2024</p>
+                  <p>Certificate ID: TFDC-2024-00123</p>
                 </div>
               </div>
             </div>
@@ -902,115 +998,129 @@ Designed to streamline sports event coordination with a modern and responsive in
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-20 px-6 fade-in">
-      <div class="max-w-4xl mx-auto">
-        <h1 class="text-5xl font-extrabold text-center mb-4">
-          Contact <span class="text-cyan-400">Me</span>
-        </h1>
-        <p class="text-center text-gray-400 mb-16 max-w-2xl mx-auto">
-          Have a project in mind or want to discuss opportunities? Feel free to reach out!
-        </p>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div class="gradient-border">
-            <div class="bg-[#111827] rounded-xl p-8 h-full">
-              <h2 class="text-2xl font-bold mb-6">Get in Touch</h2>
-              
-              <div class="space-y-6">
-                <div class="flex items-start">
-                  <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
-                    <i class="fas fa-envelope text-cyan-400"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-semibold">Email</h3>
-                    <p class="text-gray-400">codecraftbyifrah@gmail.com</p>
-                  </div>
-                </div>
-                
-                <div class="flex items-start">
-                  <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
-                    <i class="fab fa-linkedin-in text-cyan-400"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-semibold">LinkedIn</h3>
-                    <p class="text-gray-400">linkedin.com/in/Ifra Munawar</p>
-                  </div>
-                </div>
-                
-                <div class="flex items-start">
-                  <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
-                    <i class="fab fa-github text-cyan-400"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-semibold">GitHub</h3>
-                    <p class="text-gray-400">github.com/codecraft-by-ifra</p>
-                  </div>
-                </div>
-                
-                <div class="flex items-start">
-                  <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
-                    <i class="fab fa-instagram text-cyan-400"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-semibold">Instagram</h3>
-                    <p class="text-gray-400">codecraft_by_ifrah</p>
-                  </div>
-                </div>
+   <!-- Contact Section -->
+<section id="contact" class="py-20 px-6 fade-in">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-5xl font-extrabold text-center mb-4">
+      Contact <span class="text-cyan-400">Me</span>
+    </h1>
+    <p class="text-center text-gray-400 mb-16 max-w-2xl mx-auto">
+      Have a project in mind or want to discuss opportunities? Feel free to reach out!
+    </p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div class="gradient-border">
+        <div class="bg-[#111827] rounded-xl p-8 h-full">
+          <h2 class="text-2xl font-bold mb-6">Get in Touch</h2>
+          
+          <div class="space-y-6">
+            <a href="mailto:codecraftbyifrah@gmail.com" class="flex items-start hover:bg-cyan-400 hover:bg-opacity-10 p-2 rounded-lg transition-all duration-300">
+              <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
+                <i class="fas fa-envelope text-cyan-400"></i>
               </div>
-              
-              <div class="mt-10 pt-6 border-t border-gray-800">
-                <h3 class="font-semibold mb-4">Based in</h3>
-                <div class="flex items-center">
-                  <i class="fas fa-map-marker-alt text-cyan-400 mr-3"></i>
-                  <p class="text-gray-400">Kasur, Pakistan</p>
-                </div>
+              <div>
+                <h3 class="font-semibold">Email</h3>
+                <p class="text-gray-400">codecraftbyifrah@gmail.com</p>
               </div>
-            </div>
+            </a>
+            
+            <a href="https://www.linkedin.com/in/ifra-munawar-436651357" target="_blank" class="flex items-start hover:bg-cyan-400 hover:bg-opacity-10 p-2 rounded-lg transition-all duration-300">
+              <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
+                <i class="fab fa-linkedin-in text-cyan-400"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold">LinkedIn</h3>
+                <p class="text-gray-400">linkedin.com/in/Ifra Munawar</p>
+              </div>
+            </a>
+            
+            <a href="https://github.com/codecraft-by-ifra" target="_blank" class="flex items-start hover:bg-cyan-400 hover:bg-opacity-10 p-2 rounded-lg transition-all duration-300">
+              <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
+                <i class="fab fa-github text-cyan-400"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold">GitHub</h3>
+                <p class="text-gray-400">github.com/codecraft-by-ifra</p>
+              </div>
+            </a>
+            
+            <a href="#" target="_blank" class="flex items-start hover:bg-cyan-400 hover:bg-opacity-10 p-2 rounded-lg transition-all duration-300">
+              <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
+                <i class="fas fa-phone text-cyan-400"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold">Phone</h3>
+                <p class="text-gray-400">+923067576748</p>
+              </div>
+            </a>
           </div>
           
-          <div class="gradient-border">
-            <div class="bg-[#111827] rounded-xl p-8 h-full">
-              <h2 class="text-2xl font-bold mb-6">Send a Message</h2>
-              
-              <form action="mailto:saadali23495097@gmail.com" method="POST" enctype="text/plain" autocomplete="off">
-                <div class="input-group">
-                  <input type="text" class="input-field" required>
-                  <label class="input-label">Full Name</label>
-                </div>
-                
-                <div class="input-group">
-                  <input type="email" class="input-field" required>
-                  <label class="input-label">Email</label>
-                </div>
-                
-                <div class="input-group">
-                  <input type="text" class="input-field">
-                  <label class="input-label">Subject</label>
-                </div>
-                
-                <div class="input-group">
-                  <textarea class="input-field" rows="4" required></textarea>
-                  <label class="input-label">Your Message</label>
-                </div>
-                
-                <button type="submit" class="w-full mt-2 bg-cyan-400 to-blue-500 text-black font-bold py-3 rounded-lg hover:brightness-110 transition-all duration-300 transform hover:scale-[1.02]">
-                  Send Message
-                </button>
-              </form>
+          <div class="mt-10 pt-6 border-t border-gray-800">
+            <h3 class="font-semibold mb-4">Based in</h3>
+            <div class="flex items-center">
+              <i class="fas fa-map-marker-alt text-cyan-400 mr-3"></i>
+              <p class="text-gray-400">Kasur, Pakistan</p>
             </div>
           </div>
         </div>
       </div>
-    </section>
+      
+      <div class="gradient-border">
+        <div class="bg-[#111827] rounded-xl p-8 h-full">
+          <h2 class="text-2xl font-bold mb-6">Send a Message</h2>
+          
+          <!-- Updated Form with Formspree -->
+          <form action="https://formspree.io/f/myznjyne" method="POST" id="contact-form">
+            <div class="input-group">
+              <input type="text" name="name" class="input-field" required>
+              <label class="input-label">Full Name</label>
+            </div>
+            
+            <div class="input-group">
+              <input type="email" name="email" class="input-field" required>
+              <label class="input-label">Email</label>
+            </div>
+            
+            <div class="input-group">
+              <input type="text" name="subject" class="input-field">
+              <label class="input-label">Subject</label>
+            </div>
+            
+            <div class="input-group">
+              <textarea name="message" class="input-field" rows="4" required></textarea>
+              <label class="input-label">Your Message</label>
+            </div>
+            
+            <button type="submit" class="w-full mt-2 bg-cyan-400 to-blue-500 text-black font-bold py-3 rounded-lg hover:brightness-110 transition-all duration-300 transform hover:scale-[1.02]">
+              Send Message
+            </button>
+            
+            <!-- Success Message (Hidden by default) -->
+            <div id="form-success" class="hidden mt-4 p-4 bg-green-500 bg-opacity-20 text-green-400 rounded-lg text-center">
+              <i class="fas fa-check-circle mr-2"></i>
+              Thank you! Your message has been sent successfully.
+            </div>
+            
+            <!-- Error Message (Hidden by default) -->
+            <div id="form-error" class="hidden mt-4 p-4 bg-red-500 bg-opacity-20 text-red-400 rounded-lg text-center">
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              Sorry, there was an error sending your message. Please try again.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
   </main>
 
   <!-- Footer -->
- <footer class="bg-black bg-opacity-50 border-t border-gray-800 py-4">
-  <div class="mt-4 text-center text-gray-500 text-sm">
-    <p>© 2023 Ifra Munawar. All rights reserved.</p>
-    <p class="mt-1">Crafted with <i class="fas fa-heart text-cyan-400"></i> for MERN Developer</p>
-  </div>
-</footer>
+  <footer class="bg-black bg-opacity-50 border-t border-gray-800 py-4">
+    <div class="mt-4 text-center text-gray-500 text-sm">
+      <p>© 2023 Ifra Munawar. All rights reserved.</p>
+      <p class="mt-1">Crafted with <i class="fas fa-heart text-cyan-400"></i> for MERN Developer</p>
+    </div>
+  </footer>
 
   <!-- Back to top button -->
   <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-cyan-400 text-black flex items-center justify-center shadow-lg transform transition hover:scale-110 hidden">
@@ -1123,7 +1233,7 @@ Designed to streamline sports event coordination with a modern and responsive in
     
     // Typewriter effect
     const typewriter = document.querySelector('.typewriter');
-    const text = "MERN Developer";
+    const text = "Full Stack Developer";
     let index = 0;
     
     function type() {
@@ -1164,7 +1274,58 @@ Designed to streamline sports event coordination with a modern and responsive in
         }
       });
     });
+
+
+    // Formspree form handling
+const contactForm = document.getElementById('contact-form');
+const formSuccess = document.getElementById('form-success');
+const formError = document.getElementById('form-error');
+
+if (contactForm) {
+  contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    
+    // Show loading state
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+    submitButton.disabled = true;
+    
+    try {
+      const formData = new FormData(this);
+      const response = await fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        // Show success message
+        formSuccess.classList.remove('hidden');
+        formError.classList.add('hidden');
+        this.reset();
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          formSuccess.classList.add('hidden');
+        }, 5000);
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      // Show error message
+      formError.classList.remove('hidden');
+      formSuccess.classList.add('hidden');
+    } finally {
+      // Reset button state
+      submitButton.innerHTML = originalText;
+      submitButton.disabled = false;
+    }
+  });
+}
   </script>
 </body>
-
 </html>
