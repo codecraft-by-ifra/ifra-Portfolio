@@ -1,1405 +1,2801 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
   <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <title>Ifra Munawar | Full Stack Developer</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Ifra Munawar | Software Engineer & Full-Stack Developer</title>
+  <meta name="description"
+    content="Portfolio of Ifra Munawar - Software Engineer specializing in NestJS, TypeScript, PostgreSQL, React, and LLM-powered enterprise systems." />
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              50: '#ecfeff',
+              100: '#cffafe',
+              200: '#a5f3fc',
+              300: '#67e8f9',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              neon: '#00fff7',
+              dark: '#05070e',
+              card: '#0c1322',
+              cardBorder: '#1e293b'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Three.js for interactive 3D particle space -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <style>
     :root {
       --primary: #00fff7;
-      --secondary: #06b6d4;
-      --dark: #0a0a0a;
-      --darker: #050505;
-      --card: #111827;
+      --secondary: #3b82f6;
+      --accent: #8b5cf6;
+      --dark-bg: #030712;
+      --card-bg: rgba(12, 19, 34, 0.75);
     }
-    
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: "Inter", sans-serif;
-      background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-      color: #fff;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--dark-bg);
+      color: #f1f5f9;
       overflow-x: hidden;
+      selection-background-color: #00fff7;
+      selection-color: #000;
     }
-    
-    /* Hide scrollbar */
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    
-    /* Particles background */
-    #particles-js {
+
+    ::selection {
+      background: rgba(0, 255, 247, 0.3);
+      color: #00fff7;
+    }
+
+    /* 3D Canvas Background */
+    #canvas3d {
       position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
       top: 0;
       left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
     }
-    
-    /* Glowing elements */
-    .glow {
-      box-shadow: 0 0 15px rgba(0, 255, 247, 0.5);
-      transition: all 0.3s ease;
+
+    /* Custom Glassmorphism */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    
-    .glow:hover {
-      box-shadow: 0 0 25px rgba(0, 255, 247, 0.8);
+
+    .glass-card:hover {
+      border-color: rgba(0, 255, 247, 0.35);
+      box-shadow: 0 20px 40px -15px rgba(0, 255, 247, 0.15), 0 0 20px -5px rgba(0, 255, 247, 0.1);
     }
-    
-    /* Neon effects */
+
+    /* 3D Tilt Card Container */
+    .tilt-card {
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: transform 0.15s ease-out;
+      will-change: transform;
+    }
+
+    .tilt-content {
+      transform: translateZ(30px);
+      transition: transform 0.25s ease-out;
+    }
+
+    .tilt-deep {
+      transform: translateZ(50px);
+    }
+
+    /* Cyber Neon Text & Glow */
     .neon-text {
-      color: var(--primary);
-      text-shadow:
-        0 0 5px var(--primary),
-        0 0 10px var(--primary),
-        0 0 20px var(--primary),
-        0 0 40px var(--primary);
+      color: #00fff7;
+      text-shadow: 0 0 12px rgba(0, 255, 247, 0.6), 0 0 30px rgba(0, 255, 247, 0.2);
     }
-    
+
     .neon-border {
-      border: 2px solid var(--primary);
-      transition: all 0.3s ease;
-    }
-    
-    .neon-border:hover {
-      box-shadow:
-        0 0 5px var(--primary),
-        0 0 10px var(--primary),
-        0 0 20px var(--primary),
-        0 0 40px var(--primary);
-      transform: scale(1.05);
-    }
-    
-    .neon-dot {
-      background-color: var(--primary);
-      box-shadow:
-        0 0 5px var(--primary),
-        0 0 10px var(--primary),
-        0 0 20px var(--primary),
-        0 0 40px var(--primary);
-    }
-    
-    /* Animated gradient border */
-    .gradient-border {
       position: relative;
-      background: var(--card);
-      border-radius: 1rem;
-      overflow: hidden;
-      transition: all 0.3s ease;
     }
-    
-    .gradient-border::before {
+
+    .neon-border::after {
       content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(0, 255, 247, 0.6), rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.6));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    /* Animated gradient border card */
+    .animated-border {
+      position: relative;
+      border-radius: 1.25rem;
+      background: rgba(12, 19, 34, 0.85);
+      overflow: hidden;
+    }
+
+    .animated-border::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(transparent, transparent, #00fff7, #3b82f6, transparent);
+      animation: rotateBorder 6s linear infinite;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    .animated-border:hover::before {
+      opacity: 0.8;
+      animation-duration: 3s;
+    }
+
+    .animated-border>div {
+      position: relative;
+      z-index: 1;
+      border-radius: 1.2rem;
+      background: rgba(10, 16, 30, 0.94);
+    }
+
+    @keyframes rotateBorder {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Glare effect on tilt */
+    .card-glare {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
       border-radius: inherit;
-      padding: 2px;
-      background: linear-gradient(45deg, var(--primary), var(--secondary));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: destination-out;
-      mask-composite: exclude;
-      z-index: -1;
-      animation: rotate 3s linear infinite;
-    }
-    
-    @keyframes rotate {
-      100% { transform: rotate(360deg); }
-    }
-    
-    /* Floating animation */
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0px); }
-    }
-    
-    .floating {
-      animation: float 4s ease-in-out infinite;
-    }
-    
-    /* Section animations */
-    .fade-in {
+      background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-    
-    .fade-in.appear {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    /* Project card flip */
-    .project-card {
-      perspective: 1000px;
-      height: 450px;
-    }
-    
-    .card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.8s;
-      transform-style: preserve-3d;
-    }
-    
-    .project-card:hover .card-inner {
-      transform: rotateY(180deg);
-    }
-    
-    .card-front, .card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      border-radius: 1rem;
-      overflow: hidden;
-    }
-    
-    .card-back {
-      background: linear-gradient(135deg, var(--card) 0%, #1a202c 100%);
-      transform: rotateY(180deg);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 1.5rem;
-    }
-    
-    /* Certificate card flip */
-    .certificate-card {
-      perspective: 1000px;
-      height: 430px;
-      width: 70%;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    
-    .certificate-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.8s;
-      transform-style: preserve-3d;
-    }
-    
-    .certificate-card:hover .certificate-inner {
-      transform: rotateY(180deg);
-    }
-    
-    .certificate-front, .certificate-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      border-radius: 1rem;
-      overflow: hidden;
-    }
-    
-    .certificate-back {
-      background: linear-gradient(135deg, var(--card) 0%, #1a202c 100%);
-      transform: rotateY(180deg);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 2rem;
-    }
-    
-    /* Form styling */
-    .input-group {
-      position: relative;
-      margin-bottom: 2rem;
-    }
-    
-    .input-field {
-      width: 100%;
-      background: transparent;
-      border: none;
-      border-bottom: 2px solid var(--primary);
-      padding: 10px 0;
-      color: white;
-      font-size: 1rem;
-      outline: none;
-      transition: border-color 0.3s;
-    }
-    
-    .input-label {
-      position: absolute;
-      top: 10px;
-      left: 0;
-      color: rgba(255, 255, 255, 0.7);
-      transition: all 0.3s ease;
       pointer-events: none;
-    }
-    
-    .input-field:focus ~ .input-label,
-    .input-field:valid ~ .input-label {
-      top: -15px;
-      font-size: 0.8rem;
-      color: var(--primary);
-    }
-    
-    .input-field:focus {
-      border-bottom-color: var(--secondary);
-    }
-    
-    /* Scroll progress indicator */
-    .progress-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: transparent;
-      z-index: 100;
-    }
-    
-    .progress-bar {
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-    
-    /* Wave animation for skill bars */
-    .wave {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(255,255,255,0.2)" d="M0,10 C30,15 50,5 100,10 L100,20 L0,20 Z" /></svg>');
-      background-size: 100% 100%;
-      opacity: 0.3;
-      animation: wave 2s linear infinite;
-    }
-    
-    @keyframes wave {
-      0% { background-position-x: 0; }
-      100% { background-position-x: 100px; }
+      transition: opacity 0.3s ease;
+      mix-blend-mode: overlay;
     }
 
-     .skills-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-      gap: 30px;
-      padding: 40px;
-    }
+    /* Floating animation */
+    @keyframes floatGentle {
 
-    .skills-column {
-      background: #111827;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(108, 92, 231, 0.1);
-      padding: 35px;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      position: relative;
-      overflow: hidden;
-    }
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
 
-    .skills-column:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 40px rgba(108, 92, 231, 0.2);
-    }
-
-    .skills-column::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, cyan);
-    }
-
-    .column-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 35px;
-    }
-
-    .column-header i {
-      font-size: 2.5rem;
-      color: cyan;
-      margin-right: 18px;
-      background: rgba(108, 92, 231, 0.1);
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .column-header h2 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: white;
-    }
-
-    /* Technical Skills */
-    .skill-item {
-      margin-bottom: 30px;
-      animation: fadeIn 0.6s forwards;
-      opacity: 0;
-    }
-
-    .skill-info {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-
-    .skill-name {
-      font-weight: 600;
-      color: white;
-      font-size: 1.1rem;
-    }
-
-    .skill-percent {
-      font-weight: 700;
-      color: cyan;
-      font-size: 1.1rem;
-    }
-
-    .progress-container {
-      height: 14px;
-      background: #e9ecef;
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, cyan);
-      border-radius: 10px;
-      position: relative;
-      width: 0;
-      transition: width 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
-
-    .progress-bar::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(255,255,255,0.3)" d="M0,10 C30,15 50,5 100,10 L100,20 L0,20 Z" /></svg>');
-      background-size: 100% 100%;
-      opacity: 0.6;
-      animation: wave 2s linear infinite;
-    }
-
-    /* Professional Skills */
-    .skill-cards {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
-    }
-
-    .skill-card {
-      background: #111827;
-      border-radius: 12px;
-      padding: 25px;
-      text-align: center;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid #e9ecef;
-    }
-
-    .skill-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.15);
-      border-color: #d6d8ff;
-    }
-
-    .skill-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, cyan);
-    }
-
-    .skill-card i {
-      font-size: 2.5rem;
-      color: cyan;
-      margin-bottom: 20px;
-      display: inline-block;
-    }
-
-    .skill-card h3 {
-      font-weight: 600;
-      color: white;
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-    }
-
-    .skill-value {
-      font-weight: 700;
-      font-size: 2.2rem;
-      color: cyan;
-      display: block;
-      transition: all 0.5s ease;
-    }
-
-    .skill-card:hover .skill-value {
-      transform: scale(1.2);
-      text-shadow: 0 5px 15px rgba(26, 235, 235, 0.3);
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes wave {
-      0% { background-position-x: 0; }
-      100% { background-position-x: 100px; }
-    }
-
-    /* Certificate Section Styles */
-    .certificate-container {
-      display: flex;
-      flex-direction: column;
-      gap: 3rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .certificate-front {
-      background: var(--card);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-
-    .certificate-front img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border-radius: 0.5rem;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 1100px) {
-      .skills-content {
-        grid-template-columns: 1fr;
+      50% {
+        transform: translateY(-8px) rotate(0.5deg);
       }
     }
 
-    @media (max-width: 768px) {
-      .section-header h1 {
-        font-size: 2.5rem;
-      }
-      
-      .section-header p {
-        font-size: 1rem;
-      }
-      
-      .skills-column {
-        padding: 25px;
-      }
-      
-      .skill-cards {
-        grid-template-columns: 1fr;
-      }
-      
-      .column-header h2 {
-        font-size: 1.8rem;
-      }
-      
-      .column-header i {
-        width: 60px;
-        height: 60px;
-        font-size: 2rem;
-      }
-      
-      .certificate-card {
-        height: 350px;
-      }
+    .animate-float {
+      animation: floatGentle 5s ease-in-out infinite;
     }
 
-    @media (max-width: 600px) {
-      .certificate-card {
-        height: 300px;
-      }
-      
-      .certificate-back {
-        padding: 1.5rem;
-      }
+    /* Modal Backdrop */
+    .modal-backdrop {
+      background: rgba(3, 7, 18, 0.85);
+      backdrop-filter: blur(12px);
     }
 
-    @media (max-width: 480px) {
-      .certificate-card {
-        height: 280px;
-      }
-      
-      .certificate-back {
-        padding: 1rem;
-      }
-      
-      .certificate-back h3 {
-        font-size: 1.3rem;
-      }
-      
-      .certificate-back p {
-        font-size: 0.9rem;
-      }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #030712;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00fff7;
+    }
+
+    /* Timeline connectors */
+    .timeline-dot {
+      box-shadow: 0 0 0 4px rgba(0, 255, 247, 0.2), 0 0 15px rgba(0, 255, 247, 0.5);
+    }
+
+    /* =========================================================================
+       LIGHT THEME STYLING
+       ========================================================================= */
+    body.light-theme {
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+
+    body.light-theme header#mainHeader {
+      background-color: rgba(255, 255, 255, 0.88);
+      border-bottom-color: rgba(226, 232, 240, 0.95);
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    body.light-theme #brandFirstName {
+      color: #0f172a;
+    }
+
+    body.light-theme .nav-link {
+      color: #475569;
+    }
+
+    body.light-theme .nav-link:hover,
+    body.light-theme .nav-link.active {
+      color: #0284c7;
+      background-color: rgba(2, 132, 199, 0.08);
+    }
+
+    body.light-theme .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      border-color: rgba(226, 232, 240, 0.95);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    }
+
+    body.light-theme .glass-card:hover {
+      border-color: rgba(2, 132, 199, 0.4);
+      box-shadow: 0 20px 30px -10px rgba(2, 132, 199, 0.15);
+    }
+
+    body.light-theme .animated-border>div {
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    body.light-theme .animated-border {
+      background: #ffffff;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+    }
+
+    body.light-theme h1,
+    body.light-theme h2,
+    body.light-theme h3,
+    body.light-theme h4,
+    body.light-theme strong {
+      color: #0f172a !important;
+    }
+
+    body.light-theme p,
+    body.light-theme .text-slate-300,
+    body.light-theme .text-slate-400 {
+      color: #475569;
+    }
+
+    body.light-theme .bg-slate-900\/60,
+    body.light-theme .bg-slate-900\/80,
+    body.light-theme .bg-slate-900\/90,
+    body.light-theme .bg-slate-900 {
+      background-color: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+    }
+
+    body.light-theme input,
+    body.light-theme textarea {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    body.light-theme input::placeholder,
+    body.light-theme textarea::placeholder {
+      color: #94a3b8 !important;
+    }
+
+    body.light-theme footer {
+      background-color: #f1f5f9;
+      border-top-color: #e2e8f0;
+    }
+
+    body.light-theme #mobileMenu {
+      background-color: rgba(255, 255, 255, 0.98);
+      border-bottom-color: #e2e8f0;
+    }
+
+    body.light-theme .mobile-nav-link {
+      color: #1e293b;
+    }
+
+    body.light-theme .mobile-nav-link:hover {
+      background-color: #f1f5f9;
+      color: #0284c7;
+    }
+
+    body.light-theme #themeToggleBtn {
+      background-color: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    body.light-theme #mobileMenuBtn {
+      background-color: #f1f5f9;
+      border-color: #cbd5e1;
+      color: #0284c7;
     }
   </style>
 </head>
-<body class="overflow-x-hidden">
-  <!-- Particles background -->
-  <div id="particles-js"></div>
-  
-  <!-- Navbar -->
-  <header class="fixed top-0 left-0 right-0 bg-black bg-opacity-80 backdrop-blur-sm z-50 border-b border-gray-900 transition-all duration-300 h-20">
-    <div class="max-w-7xl mx-auto flex justify-between items-center h-full px-6 sm:px-10 md:px-16">
-      <div class="text-white font-extrabold text-lg sm:text-xl md:text-2xl flex items-center">
-        <span>IFRA</span>
-        <span class="text-cyan-400 ml-1 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] font-extrabold">MUNAWAR</span>
-      </div>
 
-      <nav>
-        <ul class="hidden md:flex space-x-8 text-sm sm:text-base font-semibold">
-          <li><a href="#home" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Home</a></li>
-          <li><a href="#about" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">About</a></li>
-          <li><a href="#education" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Education</a></li>
-          <li><a href="#skills" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Skills</a></li>
-          <li><a href="#project" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Projects</a></li>
-          <li><a href="#certificates" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Certificates</a></li>
-          <li><a href="#contact" class="relative group nav-link after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-cyan-500 after:transition-all after:duration-300 hover:after:w-full">Contact</a></li>
-        </ul>
+<body class="text-slate-100 antialiased selection:bg-cyan-500 selection:text-black">
 
-        <button id="nav-toggle" aria-label="Toggle navigation menu" class="md:hidden text-cyan-400 focus:outline-none">
-          <i class="fas fa-bars fa-lg"></i>
-        </button>
-        <ul id="mobile-menu" class="hidden absolute right-6 top-16 bg-black bg-opacity-90 border border-cyan-400 rounded-md py-2 w-40 text-center space-y-2 font-semibold text-cyan-400 z-50">
-          <li><a href="#home" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Home</a></li>
-          <li><a href="#about" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">About</a></li>
-          <li><a href="#education" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Education</a></li>
-          <li><a href="#skills" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Skills</a></li>
-          <li><a href="#project" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Projects</a></li>
-          <li><a href="#certificates" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Certificates</a></li>
-          <li><a href="#contact" class="block px-4 py-1 hover:bg-cyan-400 hover:text-black rounded transition">Contact</a></li>
-        </ul>
+  <!-- Interactive 3D Canvas Background -->
+  <canvas id="canvas3d"></canvas>
+
+  <!-- Scroll Progress Indicator -->
+  <div class="fixed top-0 left-0 right-0 h-[3px] bg-transparent z-[100]">
+    <div id="scrollProgressBar"
+      class="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 w-0 transition-all duration-150"></div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast"
+    class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 px-5 py-3 rounded-xl bg-slate-900 border border-cyan-400/50 text-cyan-300 shadow-2xl shadow-cyan-500/20 backdrop-blur-md">
+    <i class="fas fa-check-circle text-cyan-400 text-lg"></i>
+    <span id="toastMsg" class="text-sm font-medium">Notification message</span>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header id="mainHeader"
+    class="fixed top-0 left-0 right-0 z-40 bg-[#030712]/85 backdrop-blur-md border-b border-slate-800/80 transition-all duration-300 h-20">
+    <div class="max-w-7xl mx-auto flex items-center justify-between h-full px-5 sm:px-8 lg:px-12">
+
+      <!-- Brand Logo -->
+      <a href="#home"
+        class="group flex items-center text-xl sm:text-2xl font-black tracking-wider text-white hover:opacity-90 transition-opacity">
+        <span class="tracking-normal font-extrabold" id="brandFirstName">IFRA</span>
+        <span class="text-cyan-400 ml-1.5 font-extrabold drop-shadow-[0_0_10px_rgba(0,255,247,0.6)]">MUNAWAR</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center space-x-1 xl:space-x-2 text-xs xl:text-sm font-semibold text-slate-300">
+        <a href="#home"
+          class="nav-link px-3 py-2 rounded-lg hover:text-cyan-400 hover:bg-slate-800/40 transition">Home</a>
+        <a href="#about"
+          class="nav-link px-3 py-2 rounded-lg hover:text-cyan-400 hover:bg-slate-800/40 transition">About</a>
+        <a href="#experience"
+          class="nav-link px-3 py-2 rounded-lg hover:text-cyan-400 hover:bg-slate-800/40 transition">Experience</a>
+        <a href="#skills"
+          class="nav-link px-3 py-2 rounded-lg hover:text-cyan-400 hover:bg-slate-800/40 transition">Skills</a>
+        <a href="#projects"
+          class="nav-link px-3 py-2 rounded-lg hover:text-cyan-400 hover:bg-slate-800/40 transition">Projects</a>
+        <a href="#certificates"
+          class="nav-link px-3 py-2 rounded-lg hover:text-cyan-400 hover:bg-slate-800/40 transition">Certificates</a>
+        <a href="#education"
+          class="nav-link px-3 py-2 rounded-lg hover:text-cyan-400 hover:bg-slate-800/40 transition">Education</a>
+        <a href="#contact"
+          class="nav-link px-3 py-2 rounded-lg hover:text-cyan-400 hover:bg-slate-800/40 transition">Contact</a>
       </nav>
+
+      <!-- CTA, Theme Toggle & Mobile Menu Button -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <!-- Light / Dark Theme Toggle Switch Button -->
+        <button id="themeToggleBtn" aria-label="Toggle Color Theme" title="Switch Theme (Dark / Light)"
+          class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs font-semibold text-slate-200 hover:border-cyan-400/70 hover:text-cyan-300 shadow-md transition-all duration-300 focus:outline-none hover:scale-105 active:scale-95 cursor-pointer">
+          <i class="fas fa-sun text-amber-400 text-sm" id="themeIcon"></i>
+          <span id="themeToggleText" class="hidden sm:inline font-mono">Dark</span>
+        </button>
+
+        <a href="CV.pdf" download
+          class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-bold text-xs tracking-wider uppercase hover:shadow-lg hover:shadow-cyan-400/25 hover:brightness-110 active:scale-95 transition-all duration-300">
+          <i class="fas fa-file-arrow-down"></i>
+          <span>Resume</span>
+        </a>
+
+        <button id="mobileMenuBtn" aria-label="Toggle Navigation Menu"
+          class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-slate-900/90 text-cyan-400 border border-slate-700/80 hover:border-cyan-400/60 focus:outline-none shadow-md transition-all">
+          <i class="fas fa-bars text-lg" id="menuIcon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobileMenu"
+      class="lg:hidden hidden bg-[#070d1b]/98 backdrop-blur-2xl border-b border-slate-800 px-6 py-6 transition-all duration-300 shadow-2xl">
+      <div class="flex flex-col space-y-2.5 font-medium text-slate-200">
+        <a href="#home"
+          class="mobile-nav-link flex items-center gap-3 py-2.5 px-3.5 rounded-xl hover:bg-cyan-500/10 hover:text-cyan-400 transition">
+          <i class="fas fa-house text-cyan-400 w-5"></i> <span>Home</span>
+        </a>
+        <a href="#about"
+          class="mobile-nav-link flex items-center gap-3 py-2.5 px-3.5 rounded-xl hover:bg-cyan-500/10 hover:text-cyan-400 transition">
+          <i class="fas fa-user text-cyan-400 w-5"></i> <span>About</span>
+        </a>
+        <a href="#experience"
+          class="mobile-nav-link flex items-center gap-3 py-2.5 px-3.5 rounded-xl hover:bg-cyan-500/10 hover:text-cyan-400 transition">
+          <i class="fas fa-briefcase text-cyan-400 w-5"></i> <span>Experience (Folio3)</span>
+        </a>
+        <a href="#skills"
+          class="mobile-nav-link flex items-center gap-3 py-2.5 px-3.5 rounded-xl hover:bg-cyan-500/10 hover:text-cyan-400 transition">
+          <i class="fas fa-code text-cyan-400 w-5"></i> <span>Technical Skills</span>
+        </a>
+        <a href="#projects"
+          class="mobile-nav-link flex items-center gap-3 py-2.5 px-3.5 rounded-xl hover:bg-cyan-500/10 hover:text-cyan-400 transition">
+          <i class="fas fa-laptop-code text-cyan-400 w-5"></i> <span>Projects (ATS & Novexa)</span>
+        </a>
+        <a href="#certificates"
+          class="mobile-nav-link flex items-center gap-3 py-2.5 px-3.5 rounded-xl hover:bg-cyan-500/10 hover:text-cyan-400 transition">
+          <i class="fas fa-certificate text-cyan-400 w-5"></i> <span>Certificates</span>
+        </a>
+        <a href="#education"
+          class="mobile-nav-link flex items-center gap-3 py-2.5 px-3.5 rounded-xl hover:bg-cyan-500/10 hover:text-cyan-400 transition">
+          <i class="fas fa-graduation-cap text-cyan-400 w-5"></i> <span>Education</span>
+        </a>
+        <a href="#contact"
+          class="mobile-nav-link flex items-center gap-3 py-2.5 px-3.5 rounded-xl hover:bg-cyan-500/10 hover:text-cyan-400 transition">
+          <i class="fas fa-envelope text-cyan-400 w-5"></i> <span>Contact</span>
+        </a>
+
+        <div class="pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
+          <button id="mobileThemeToggleBtn"
+            class="flex-1 py-2.5 px-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center justify-center gap-2 hover:border-cyan-400 transition">
+            <i class="fas fa-circle-half-stroke text-cyan-400" id="mobileThemeIcon"></i>
+            <span id="mobileThemeText">Theme Mode</span>
+          </button>
+          <a href="CV.pdf" download
+            class="flex-1 py-2.5 px-3 text-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-bold text-xs tracking-wider uppercase">
+            Download CV
+          </a>
+        </div>
+      </div>
     </div>
   </header>
 
-  <main class="pt-20 scroll-smooth">
-    <!-- Home Section -->
-    <section id="home" class="min-h-screen flex flex-col md:flex-row items-center justify-center px-6 sm:px-10 md:px-16 gap-12 md:gap-24 py-12 md:py-20 max-w-7xl mx-auto">
-      <section class="max-w-xl md:max-w-lg fade-in">
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-2">
-          Hi, I'm
-          <span class="text-cyan-400 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] animate-pulse">IFRA MUNAWAR</span>
-        </h1>
-        <h2 class="text-xl sm:text-3xl font-semibold mb-4"> 
-          <span class="text-cyan-400 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] typewriter"> </span>
-        </h2>
-        <p class="text-base sm:text-lg font-medium leading-relaxed mb-8 max-w-md text-gray-300">
-        I create responsive, scalable web applications using MongoDB, Express.js, React.js, and Node.js. Currently working as a Software Engineer Intern at FOLIO3, building full-stack MERN applications with a focus on clean architecture, secure authentication, and real-world backend engineering.</p>
-        <div class="flex space-x-4 mb-8">
-          <a aria-label="LinkedIn" href="https://www.linkedin.com/in/ifra-munawar-436651357?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a aria-label="GitHub" href="https://github.com/codecraft-by-ifra" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
-            <i class="fab fa-github"></i>
-          </a>
-          <a aria-label="Instagram" href="https://www.instagram.com/codecraft_by_ifrah?igsh=a29kbWo1MmlhaXpz" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a aria-label="Email" href="mailto:codecraftbyifrah@gmail.com" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center rounded-full border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] glow">
-            <i class="fas fa-envelope"></i>
-          </a>
-        </div>
-        <div>
-          <a href="CV.pdf" download class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-cyan-400 to-blue-500 text-black font-semibold drop-shadow-[0_0_8px_rgba(22,255,255,0.7)] hover:brightness-110 transition-all duration-300 transform hover:scale-105">
-            <i class="fas fa-download"></i> Download CV
-          </a>
-        </div>
-      </section>
-      
-      <section class="flex-shrink-0 fade-in">
-        <div class="relative floating">
-          <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 blur-xl opacity-70 animate-pulse"></div>
-          <img
-            alt="Profile image of IFRA"
-            src="pic.png"
-            class="rounded-xl object-cover relative"
-            style="width: 350px; height: 400px;"
-          />
-        </div>
-      </section>
-    </section>
+  <main class="relative z-10 pt-20">
 
-    <!-- About Section -->
-    <section id="about" class="min-h-screen flex flex-col items-center justify-center py-20 px-6 fade-in">
-      <h1 class="text-5xl md:text-6xl font-extrabold text-center mb-16">
-        About <span class="text-cyan-400">Me</span>
-      </h1>
-    
-      <div class="gradient-border max-w-4xl p-1 rounded-xl">
-        <div class="bg-[#111827] rounded-xl p-8 backdrop-blur-sm">
-          <p class="text-lg md:text-xl leading-relaxed mb-6 text-gray-200">
-            I'm Ifra Munawar, a Computer Science graduate and Software Engineer Intern at FOLIO3, specializing in full-stack development with the MERN stack. I build complete web applications end-to-end — from React.js frontends with clean, reusable components to Node.js/Express.js backends with well-structured, layered architecture. My recent work includes NOVEXA, a full-stack e-commerce platform where I tackled real engineering problems like race-condition-safe checkouts and order lifecycle management. I enjoy turning practical problems into scalable, maintainable software.
+    <!-- HERO SECTION -->
+    <section id="home"
+      class="min-h-[calc(100vh-5rem)] flex items-center justify-center px-6 lg:px-12 py-12 md:py-20 max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center w-full">
+
+        <!-- Left Hero Content -->
+        <div class="lg:col-span-7 flex flex-col items-start space-y-6">
+
+          <!-- Status Badge -->
+
+
+          <!-- Headline -->
+          <div class="space-y-2">
+            <h2 class="text-sm md:text-base font-mono uppercase tracking-widest text-slate-400">Hello, I'm</h2>
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white">
+              Ifra <span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-500 drop-shadow-[0_0_25px_rgba(0,255,247,0.4)]">Munawar</span>
+            </h1>
+            <div
+              class="h-10 md:h-12 flex items-center text-xl sm:text-2xl md:text-3xl font-semibold text-cyan-400 font-mono">
+              <span id="typewriter"></span>
+              <span class="animate-pulse ml-1 text-cyan-300">|</span>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl font-normal">
+            Software Engineer with hands-on experience building secure, modular, and production-ready backend systems
+            with
+            <span class="text-cyan-300 font-medium">NestJS, TypeScript, Node.js, and PostgreSQL</span>.
+            Currently engineering an enterprise <span class="text-white font-medium">Applicant Tracking System
+              (ATS)</span> at <span class="text-cyan-300 font-semibold">Folio3</span> inside an Nx monorepo,
+            orchestrating LLM resume parsing, Google Calendar automation, and concurrency-safe microservice
+            architectures.
           </p>
-          
-          <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="gradient-border p-1 rounded-lg">
-              <div class="bg-[#111827] rounded-lg p-4 text-center h-full">
-                <div class="text-cyan-400 text-3xl mb-3">
-                  <i class="fas fa-code"></i>
-                </div>
-                <h3 class="font-bold text-xl mb-2">Full-Stack Development</h3>
-                <p class="text-gray-300">Building complete MERN applications, from responsive React frontends to Node.js/Express backends</p>
-              </div>
+
+          <!-- Metric Highlights Strip -->
+          <div class="grid grid-cols-3 gap-3 w-full max-w-lg pt-2">
+            <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 text-center">
+              <div class="text-xl sm:text-2xl font-bold font-mono text-cyan-400">Folio3</div>
+              <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-0.5">ATS Microservice</div>
             </div>
-            
-            <div class="gradient-border p-1 rounded-lg">
-              <div class="bg-[#111827] rounded-lg p-4 text-center h-full">
-                <div class="text-cyan-400 text-3xl mb-3">
-                  <i class="fas fa-mobile-alt"></i>
-                </div>
-                <h3 class="font-bold text-xl mb-2">API & System Design</h3>
-                <p class="text-gray-300">Designing RESTful APIs and layered backend architectures with a focus on maintainability and scalability</p>
-              </div>
+            <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 text-center">
+              <div class="text-xl sm:text-2xl font-bold font-mono text-cyan-400">3+ Certs</div>
+              <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-0.5">Google Cloud & FullStack</div>
             </div>
-            
-            <div class="gradient-border p-1 rounded-lg">
-              <div class="bg-[#111827] rounded-lg p-4 text-center h-full">
-                <div class="text-cyan-400 text-3xl mb-3">
-                  <i class="fas fa-rocket"></i>
-                </div>
-                <h3 class="font-bold text-xl mb-2">Problem Solving</h3>
-                <p class="text-gray-300">Solving real engineering challenges like concurrency issues, data integrity, and secure authentication</p>
-              </div>
+            <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 text-center">
+              <div class="text-xl sm:text-2xl font-bold font-mono text-cyan-400">3.60</div>
+              <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-0.5">BSCS CGPA</div>
+            </div>
+          </div>
+
+          <!-- Social Links & Action Buttons -->
+          <div class="flex flex-wrap items-center gap-4 pt-4">
+            <a href="#projects"
+              class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-bold text-sm tracking-wide shadow-lg shadow-cyan-500/20 hover:shadow-cyan-400/40 hover:brightness-110 transform hover:-translate-y-0.5 transition-all duration-300">
+              <i class="fas fa-laptop-code"></i>
+              <span>Explore My Work</span>
+            </a>
+
+            <a href="CV.pdf" download
+              class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900/80 border border-cyan-400/40 text-cyan-300 font-semibold text-sm hover:bg-cyan-500/10 hover:border-cyan-400 transform hover:-translate-y-0.5 transition-all duration-300">
+              <i class="fas fa-file-pdf"></i>
+              <span>Download CV</span>
+            </a>
+
+            <!-- Social Icons -->
+            <div class="flex items-center gap-2 pl-2">
+              <a href="https://www.linkedin.com/in/ifra-munawar-436651357" target="_blank" rel="noopener"
+                title="LinkedIn Profile"
+                class="w-11 h-11 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-cyan-400 hover:border-cyan-400/50 hover:shadow-md hover:shadow-cyan-400/20 transition-all">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="https://github.com/codecraft-by-ifra" target="_blank" rel="noopener" title="GitHub Profile"
+                class="w-11 h-11 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-cyan-400 hover:border-cyan-400/50 hover:shadow-md hover:shadow-cyan-400/20 transition-all">
+                <i class="fab fa-github"></i>
+              </a>
+              <button onclick="copyToClipboard('codecraftbyifrah@gmail.com', 'Email address copied!')"
+                title="Copy Email"
+                class="w-11 h-11 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-cyan-400 hover:border-cyan-400/50 hover:shadow-md hover:shadow-cyan-400/20 transition-all">
+                <i class="fas fa-envelope"></i>
+              </button>
             </div>
           </div>
         </div>
+
+        <!-- Right Hero 3D Card / Portrait -->
+        <div class="lg:col-span-5 flex justify-center items-center">
+          <div class="relative w-full max-w-sm sm:max-w-md tilt-card" id="heroProfileCard">
+
+            <!-- Ambient Glow Behind -->
+            <div
+              class="absolute -inset-2 bg-gradient-to-r from-cyan-500/30 to-blue-600/30 rounded-3xl blur-2xl opacity-60 animate-pulse pointer-events-none">
+            </div>
+
+            <div class="animated-border p-1 rounded-3xl shadow-2xl">
+              <div class="p-6 sm:p-8 flex flex-col items-center text-center relative overflow-hidden">
+                <div class="card-glare"></div>
+
+                <!-- Profile Photo with Cyber Ring -->
+                <div class="relative mb-6 tilt-content">
+                  <div
+                    class="absolute -inset-1.5 rounded-2xl bg-gradient-to-tr from-cyan-400 via-blue-500 to-indigo-500 opacity-80 blur-[2px]">
+                  </div>
+                  <img src="pic.png" alt="Ifra Munawar"
+                    class="relative w-48 h-56 sm:w-56 sm:h-64 object-cover rounded-2xl shadow-xl border border-cyan-400/30" />
+
+                  <div
+                    class="absolute -bottom-3 -right-3 px-3 py-1 rounded-lg bg-slate-950 border border-cyan-400 text-cyan-400 text-xs font-mono font-bold shadow-lg flex items-center gap-1.5">
+                    <i class="fas fa-check-circle text-cyan-400"></i> Folio3
+                  </div>
+                </div>
+
+                <!-- Information on Card -->
+                <div class="tilt-deep space-y-1">
+                  <h3 class="text-2xl font-bold text-white">Ifra Munawar</h3>
+                  <p class="text-cyan-400 font-mono text-sm">Full-Stack & Backend Engineer</p>
+                  <p class="text-slate-400 text-xs flex items-center justify-center gap-1.5 pt-1">
+                    <i class="fas fa-location-dot text-cyan-400"></i> Lahore, Pakistan
+                  </p>
+                </div>
+
+                <!-- Quick Tech Pills on 3D Card -->
+                <div class="flex flex-wrap justify-center gap-1.5 mt-5 tilt-content">
+                  <span
+                    class="px-2.5 py-1 rounded-md text-[11px] font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">NestJS</span>
+                  <span
+                    class="px-2.5 py-1 rounded-md text-[11px] font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">TypeScript</span>
+                  <span
+                    class="px-2.5 py-1 rounded-md text-[11px] font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">PostgreSQL</span>
+                  <span
+                    class="px-2.5 py-1 rounded-md text-[11px] font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">React.js</span>
+                  <span
+                    class="px-2.5 py-1 rounded-md text-[11px] font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">Groq
+                    LLM</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating mini badge 1 -->
+            <div
+              class="absolute -top-4 -left-4 p-3 rounded-xl bg-slate-900/90 border border-slate-700 backdrop-blur-md shadow-xl hidden sm:flex items-center gap-2.5 animate-float">
+              <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+                <i class="fas fa-cloud text-sm"></i>
+              </div>
+              <div class="text-left">
+                <div class="text-[11px] font-bold text-white">Google Cloud</div>
+                <div class="text-[9px] text-slate-400">Certified Data Eng 2026</div>
+              </div>
+            </div>
+
+            <!-- Floating mini badge 2 -->
+            <div
+              class="absolute -bottom-4 -right-4 p-3 rounded-xl bg-slate-900/90 border border-slate-700 backdrop-blur-md shadow-xl hidden sm:flex items-center gap-2.5 animate-float"
+              style="animation-delay: 2.5s;">
+              <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                <i class="fas fa-shield-halved text-sm"></i>
+              </div>
+              <div class="text-left">
+                <div class="text-[11px] font-bold text-white">Nx Monorepo</div>
+                <div class="text-[9px] text-slate-400">Microservice Architecture</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- Education Section -->
-    <section id="education" class="min-h-screen py-20 px-6 fade-in">
+    <!-- ABOUT SECTION -->
+    <section id="about" class="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">Architectural Foundation</h2>
+        <h3 class="text-3xl sm:text-5xl font-extrabold text-white">About <span class="text-cyan-400">Me</span></h3>
+        <div class="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+
+        <!-- Main Bio Card -->
+        <div class="lg:col-span-7 glass-card rounded-2xl p-8 lg:p-10 flex flex-col justify-between">
+          <div class="space-y-5 text-slate-300 leading-relaxed text-base sm:text-lg">
+            <p>
+              I am a <strong class="text-white">Software Engineer</strong> with a strong foundation in Computer Science
+              (BSCS from GCUF with a <span class="text-cyan-300 font-semibold">3.60 CGPA</span>) and practical industry
+              experience building high-reliability backend microservices and full-stack applications.
+            </p>
+            <p>
+              At <strong class="text-cyan-400">Folio3 Pakistan</strong>, I engineer the internal <span
+                class="text-white font-medium">Applicant Tracking System (ATS)</span> module inside a shared enterprise
+              Nx monorepo. My work spans designing dedicated PostgreSQL schemas with Sequelize, implementing JWT & RBAC
+              security, integrating Google Calendar v3 service accounts for automated interview scheduling, and building
+              AI resume parsers with Groq Cloud LLMs for multi-candidate processing.
+            </p>
+            <p>
+              Beyond enterprise microservices, I bring rich experience across the <strong class="text-white">MERN
+                stack</strong>, having architected systems like <span class="text-cyan-300">NOVEXA</span> with
+              concurrency-safe order handling (preventing overselling via MongoDB atomic operations) and automated
+              timetable scheduling platforms.
+            </p>
+          </div>
+
+          <!-- Bottom key stats -->
+          <div class="pt-8 mt-6 border-t border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+            <div>
+              <div class="text-2xl font-bold font-mono text-cyan-400">NestJS</div>
+              <div class="text-xs text-slate-400">Microservices</div>
+            </div>
+            <div>
+              <div class="text-2xl font-bold font-mono text-cyan-400">PostgreSQL</div>
+              <div class="text-xs text-slate-400">Sequelize ORM</div>
+            </div>
+            <div>
+              <div class="text-2xl font-bold font-mono text-cyan-400">React.js</div>
+              <div class="text-xs text-slate-400">Frontend UI</div>
+            </div>
+            <div>
+              <div class="text-2xl font-bold font-mono text-cyan-400">Groq LLM</div>
+              <div class="text-xs text-slate-400">AI Pipelines</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Feature Cards (Pillars) -->
+        <div class="lg:col-span-5 grid grid-cols-1 gap-4">
+
+          <div class="glass-card rounded-2xl p-6 tilt-card group">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl group-hover:scale-110 group-hover:bg-cyan-500/20 transition-all">
+                <i class="fas fa-cubes"></i>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Microservices &
+                  Layered Architecture</h4>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                  Decoupled NestJS microservices in Nx monorepos, clean modular routes-controllers-services patterns,
+                  and clean separation of concerns.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 tilt-card group">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl group-hover:scale-110 group-hover:bg-blue-500/20 transition-all">
+                <i class="fas fa-brain"></i>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">AI & LLM Pipeline
+                  Integration</h4>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                  Automating resume parsing, structured data extraction, and evaluation summarization using Groq Cloud,
+                  Gemini, and OpenAI APIs with failover strategies.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 tilt-card group">
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all">
+                <i class="fas fa-shield-halved"></i>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">Concurrency &
+                  API Security</h4>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                  Atomic DB transactions preventing race conditions, Passport JWT, granular RBAC, rate-limiting, and
+                  structured Seq auditing.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PROFESSIONAL EXPERIENCE SECTION (FOLIO3 HIGHLIGHT) -->
+    <section id="experience" class="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">Real-World Industry Engineering</h2>
+        <h3 class="text-3xl sm:text-5xl font-extrabold text-white">Professional <span
+            class="text-cyan-400">Experience</span></h3>
+        <div class="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
       <div class="max-w-5xl mx-auto">
-        <h1 class="text-white font-extrabold text-5xl text-center mb-16">
-          Education
-        </h1>
-    
-        <div class="relative flex flex-col items-center">
-          <!-- Vertical timeline line -->
-          <div class="absolute top-0 bottom-0 left-1/2 w-[2px] bg-gradient-to-b from-transparent via-cyan-400 to-transparent opacity-70"></div>
-    
-          <!-- 2019 - High School -->
-          <div class="flex w-full max-w-4xl justify-start mb-20 relative">
-            <div class="flex flex-col items-center absolute left-1/2 -translate-x-1/2">
-              <div class="neon-dot w-5 h-5 rounded-full mb-1 animate-pulse"></div>
-              <span class="text-sm font-bold text-white mb-0.5">2019</span>
+        <div class="relative pl-6 sm:pl-10 border-l-2 border-cyan-500/30 space-y-12">
+
+          <!-- Folio3 Experience Card -->
+          <div class="relative group">
+            <!-- Timeline Dot -->
+            <div
+              class="absolute -left-[31px] sm:-left-[47px] top-1.5 w-6 h-6 rounded-full bg-slate-950 border-2 border-cyan-400 timeline-dot flex items-center justify-center">
+              <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
             </div>
-            <div class="gradient-border max-w-[380px] ml-auto cursor-pointer">
-              <div class="bg-[#111827] rounded-xl p-6">
-                <h3 class="font-bold text-xl text-white mb-3">Govt. MC Girls High School</h3>
-                <p class="text-gray-300 leading-relaxed">
-                  I completed my Matriculation in Science, where I built a basic understanding of core science subjects.
-                </p>
+
+            <!-- Card -->
+            <div class="glass-card rounded-2xl p-8 sm:p-10 border border-cyan-500/30 relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-36 h-36 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none">
               </div>
-            </div>
-          </div>
-    
-          <!-- 2021 - College -->
-          <div class="flex w-full max-w-4xl justify-end mb-20 relative">
-            <div class="flex flex-col items-center absolute left-1/2 -translate-x-1/2">
-              <div class="neon-dot w-5 h-5 rounded-full mb-1 animate-pulse"></div>
-              <span class="text-sm font-bold text-white mb-0.5">2021</span>
-            </div>
-            <div class="gradient-border max-w-[380px] mr-auto cursor-pointer">
-              <div class="bg-[#111827] rounded-xl p-6">
-                <h3 class="font-bold text-xl text-white mb-3">PIASS</h3>
-                <p class="text-gray-300 leading-relaxed">
-                 I pursued Intermediate in Pre-Engineering, focusing on subjects like Mathematics, Physics, and Chemistry.
-This phase built my analytical thinking and sparked my passion for programming and technology.
-                </p>
+
+              <div
+                class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+                <div>
+                  <div class="flex items-center gap-3">
+                    <h4 class="text-2xl font-bold text-white">Software Engineer Intern</h4>
+                    <span
+                      class="px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-cyan-400/10 border border-cyan-400/40 text-cyan-300">Active</span>
+                  </div>
+                  <div class="text-lg text-cyan-400 font-semibold mt-1">Folio3 Pakistan</div>
+                </div>
+                <div class="flex items-center gap-2 text-sm font-mono text-slate-400">
+                  <i class="far fa-calendar-alt text-cyan-400"></i>
+                  <span>July 2026 – Present</span>
+                  <span class="mx-1">•</span>
+                  <i class="fas fa-map-pin text-cyan-400"></i>
+                  <span>Lahore, PK</span>
+                </div>
               </div>
-            </div>
-          </div>
-    
-          <!-- 2025 - University -->
-          <div class="flex w-full max-w-4xl justify-start mb-20 relative">
-            <div class="flex flex-col items-center absolute left-1/2 -translate-x-1/2">
-              <div class="neon-dot w-5 h-5 rounded-full mb-1 animate-pulse"></div>
-              <span class="text-sm font-bold text-white mb-0.5">2025</span>
-            </div>
-            <div class="gradient-border max-w-[380px] ml-auto cursor-pointer">
-              <div class="bg-[#111827] rounded-xl p-6">
-                <h3 class="font-bold text-xl text-white mb-3">GCUF</h3>
-                <p class="text-gray-300 leading-relaxed">
-                  I earned my BS in Computer Science, where I explored software engineering, databases, and mobile app development.
-                  This experience shaped me into a professional MERN developer.
-                </p>
+
+              <!-- Key Contributions list -->
+              <div class="pt-6 space-y-3.5 text-slate-300 text-sm sm:text-base leading-relaxed">
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-chevron-right text-cyan-400 mt-1 text-xs"></i>
+                  <span><strong>Applicant Tracking System (ATS) Architecture:</strong> Developing the internal ATS
+                    module for Folio3 Portal as a standalone NestJS microservice inside a shared enterprise Nx
+                    monorepo.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-chevron-right text-cyan-400 mt-1 text-xs"></i>
+                  <span><strong>Relational Data Layer:</strong> Designed dedicated PostgreSQL schemas using Sequelize,
+                    featuring junction tables for many-to-many relationships, binary storage for CV files, and JSONB
+                    columns for dynamic parsed candidate schemas.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-chevron-right text-cyan-400 mt-1 text-xs"></i>
+                  <span><strong>AI-Powered Resume Processing:</strong> Engineered high-throughput resume parsing
+                    leveraging Groq Cloud LLMs with automated API key failovers to handle batch imports without
+                    throttling.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-chevron-right text-cyan-400 mt-1 text-xs"></i>
+                  <span><strong>Calendar & Interview Scheduling:</strong> Integrated Google Calendar API v3 with
+                    service-account delegation to identify mutual panel availability, automatically create calendar
+                    events with Google Meet links, and advance candidate stages.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i class="fas fa-chevron-right text-cyan-400 mt-1 text-xs"></i>
+                  <span><strong>Enterprise Security & Reliability:</strong> Guarded endpoints with Passport JWT
+                    authentication and Role-Based Access Control (RBAC), rate-limited career portal APIs, and maintained
+                    Seq structured logging and Swagger documentation.</span>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 px-6 fade-in">
-      <div class="max-w-6xl mx-auto">
-        <h1 class="text-5xl font-extrabold text-center mb-16">
-          My <span class="text-cyan-400">Skills</span>
-        </h1>
-        
-        <div class="flex flex-wrap justify-between gap-8 px-4">
-          <!-- Technical Skills -->
-          <div class="skills-column" style="flex: 1 1 48%;">
-            <div class="column-header">
-              <i class="fas fa-code"></i>
-              <h2>Technical Skills</h2>
-            </div>
-          
-            <div class="skill-item">
-              <div class="skill-info">
-                <span class="skill-name">Frontend (React.js, JSX)</span>
-                <span class="skill-percent">88%</span>
+
+              <!-- Tech Stack Tags -->
+              <div class="pt-6 mt-6 border-t border-slate-800 flex flex-wrap gap-2">
+                <span
+                  class="px-3 py-1 rounded-lg text-xs font-mono bg-slate-900 border border-slate-700 text-cyan-300">NestJS</span>
+                <span
+                  class="px-3 py-1 rounded-lg text-xs font-mono bg-slate-900 border border-slate-700 text-cyan-300">TypeScript</span>
+                <span
+                  class="px-3 py-1 rounded-lg text-xs font-mono bg-slate-900 border border-slate-700 text-cyan-300">PostgreSQL</span>
+                <span
+                  class="px-3 py-1 rounded-lg text-xs font-mono bg-slate-900 border border-slate-700 text-cyan-300">Sequelize
+                  ORM</span>
+                <span
+                  class="px-3 py-1 rounded-lg text-xs font-mono bg-slate-900 border border-slate-700 text-cyan-300">Nx
+                  Monorepo</span>
+                <span
+                  class="px-3 py-1 rounded-lg text-xs font-mono bg-slate-900 border border-slate-700 text-cyan-300">Groq
+                  LLMs</span>
+                <span
+                  class="px-3 py-1 rounded-lg text-xs font-mono bg-slate-900 border border-slate-700 text-cyan-300">Google
+                  Calendar API</span>
+                <span
+                  class="px-3 py-1 rounded-lg text-xs font-mono bg-slate-900 border border-slate-700 text-cyan-300">Seq
+                  Logging</span>
+                <span
+                  class="px-3 py-1 rounded-lg text-xs font-mono bg-slate-900 border border-slate-700 text-cyan-300">Swagger</span>
               </div>
-              <div class="progress-container">
-                <div class="progress-bar" style="width: 88%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info">
-                <span class="skill-name">Backend (Node.js, Express.js)</span>
-                <span class="skill-percent">85%</span>
-              </div>
-              <div class="progress-container">
-                <div class="progress-bar" style="width: 85%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info">
-                <span class="skill-name">MongoDB & Database Design</span>
-                <span class="skill-percent">80%</span>
-              </div>
-              <div class="progress-container">
-                <div class="progress-bar" style="width: 80%"></div>
-              </div>
-            </div>
-            
-            <div class="skill-item">
-              <div class="skill-info">
-                <span class="skill-name">REST APIs & Authentication (JWT)</span>
-                <span class="skill-percent">85%</span>
-              </div>
-              <div class="progress-container">
-                <div class="progress-bar" style="width: 85%"></div>
-              </div>
-            </div>
-            
-            <div class="skill-item">
-              <div class="skill-info">
-                <span class="skill-name">Git & GitHub</span>
-                <span class="skill-percent">85%</span>
-              </div>
-              <div class="progress-container">
-                <div class="progress-bar" style="width: 85%"></div>
-              </div>
+
             </div>
           </div>
-          
-          
-          <!-- Professional Skills -->
-          <div class="skills-column" style="flex: 1 1 48%;">
-            <div class="column-header">
-              <i class="fas fa-user-tie"></i>
-              <h2>Professional Skills</h2>
-            </div>
-          
-            <div class="skill-cards">
-              <div class="skill-card">
-                <i class="fas fa-users"></i>
-                <h3>Debugging & Analytical Thinking</h3>
-                <span class="skill-value">90%</span>
-              </div>
-              
-              <div class="skill-card">
-                <i class="fas fa-lightbulb"></i>
-                <h3>Problem-Solving & Innovation</h3>
-                <span class="skill-value">80%</span>
-              </div>
-              
-              <div class="skill-card">
-                <i class="fas fa-tasks"></i>
-                <h3>Technical Communication</h3>
-                <span class="skill-value">75%</span>
-              </div>
-              
-              <div class="skill-card">
-                <i class="fas fa-comments"></i>
-                <h3>Teamwork & Collaboration</h3>
-                <span class="skill-value">70%</span>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="project" class="py-20 px-6 fade-in">
-      <div class="max-w-6xl mx-auto">
-        <h1 class="text-5xl font-extrabold text-center mb-16">
-          My <span class="text-cyan-400">Projects</span>
-        </h1>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <!-- Project 1 -->
-          <div class="project-card">
-            <div class="card-inner">
-              <div class="card-front gradient-border h-full">
-                <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col items-center justify-center">
-                  <div class="w-full h-100 mb-4 overflow-hidden rounded-lg">
-                    <img src="smart.png" alt="Smart Lecture System" class="w-full h-full object-cover">
-                  </div>
-                  <h1 class="text-3xl font-bold text-center mb-3">Smart Lecture System</h1>
-                 
-                  <div class="mt-auto pt-4 text-center">
-                    <span class="text-cyan-400 text-sm font-medium">Tap for details</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="card-back">
-                <h3 class="text-3xl font-bold mb-3">Smart Lecture System</h3>
-                <p class="text-gray-300 mb-4">
-                 A sophisticated web application built with a modern tech stack to centralize academic timetable management. It enables administrators and faculty to create, update, and manage lecture schedules with conflict-free allocation and real-time updates. With integrated announcements, notifications, and reporting, the system delivers an intelligent and data-driven scheduling experience for modern educational environments.</p> 
-                </p>
-                <div class="flex space-x-2 mt-4">
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Node.js</span>
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Express.js</span>
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">MongoDB</span>
-                </div>
-                <a href="https://github.com/codecraft-by-ifra/Smart-Lecture-System.git" target="_blank" class="mt-4 inline-flex items-center justify-center gap-2 px-4 py-2 bg-cyan-400 text-black font-semibold rounded-lg hover:brightness-110 transition-all duration-300">
-                  <i class="fab fa-github"></i> View on GitHub
-                </a>
-              </div>
+    <!-- SKILLS MATRIX SECTION -->
+    <section id="skills" class="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">Comprehensive Competencies</h2>
+        <h3 class="text-3xl sm:text-5xl font-extrabold text-white">Technical <span class="text-cyan-400">Skills</span>
+        </h3>
+        <div class="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Skills Grid (Categorized) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- 1. Backend & Microservices -->
+        <div class="glass-card rounded-2xl p-6 tilt-card">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg">
+              <i class="fas fa-server"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-lg">Backend & Microservices</h4>
+              <p class="text-xs text-slate-400">Core architecture & API design</p>
             </div>
           </div>
-          
-          <!-- Project 2 -->
-          <div class="project-card">
-            <div class="card-inner">
-              <div class="card-front gradient-border h-full">
-                <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col items-center justify-center">
-                  <div class="w-full h-100 mb-4 overflow-hidden rounded-lg">
-                    <img src="Novexa.png" alt="NOVEXA E-Commerce Platform" class="w-full h-full object-cover">
-                  </div>
-                 <h1 class="text-3xl font-bold text-center mb-3">NOVEXA</h1>
-                  <div class="mt-auto pt-4 text-center">
-                    <span class="text-cyan-400 text-sm font-medium">Tap for details</span>
-                  </div>
-                </div>
+          <div class="space-y-3.5">
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">NestJS & Modular Architecture</span>
+                <span class="text-cyan-400">92%</span>
               </div>
-              
-              <div class="card-back">
-                <h1 class="text-3xl font-bold mb-3">NOVEXA</h1>
-                <p class="text-gray-300 mb-4">
-                  A full-stack e-commerce platform built with a scalable, layered backend architecture (routes → controllers → services → models). Features a complete order lifecycle with status tracking and automatic stock restoration, a race-condition-safe checkout using MongoDB atomic operations, an admin dashboard for product and inventory management, and secure payments via Safepay.
-                </p>
-                <div class="flex space-x-2 mt-4">
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">React</span>
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Node.js</span>
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">Express</span>
-                  <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">MongoDB</span>
-                </div>
-                <a href="https://github.com/codecraft-by-ifra/NOVEXA" target="_blank" class="mt-4 inline-flex items-center justify-center gap-2 px-4 py-2 bg-cyan-400 text-black font-semibold rounded-lg hover:brightness-110 transition-all duration-300">
-                  <i class="fab fa-github"></i> View on GitHub
-                </a>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full" style="width: 92%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Node.js & Express.js</span>
+                <span class="text-cyan-400">90%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">TypeScript & ES6+</span>
+                <span class="text-cyan-400">88%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full" style="width: 88%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Nx Monorepo & Microservices</span>
+                <span class="text-cyan-400">85%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full" style="width: 85%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">REST APIs & OpenAPI / Swagger</span>
+                <span class="text-cyan-400">92%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full" style="width: 92%"></div>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- 2. Databases & ORMs -->
+        <div class="glass-card rounded-2xl p-6 tilt-card">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg">
+              <i class="fas fa-database"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-lg">Databases & Storage</h4>
+              <p class="text-xs text-slate-400">Relational & NoSQL schemas</p>
+            </div>
+          </div>
+          <div class="space-y-3.5">
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">PostgreSQL & Sequelize ORM</span>
+                <span class="text-cyan-400">88%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full" style="width: 88%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">MongoDB & Mongoose</span>
+                <span class="text-cyan-400">90%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">JSONB & Binary File Storage</span>
+                <span class="text-cyan-400">85%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full" style="width: 85%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Concurrency-Safe Transactions</span>
+                <span class="text-cyan-400">86%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full" style="width: 86%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Automated Migrations & Seeds</span>
+                <span class="text-cyan-400">88%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full" style="width: 88%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. AI, LLMs & Integrations -->
+        <div class="glass-card rounded-2xl p-6 tilt-card">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-lg">AI & 3rd-Party APIs</h4>
+              <p class="text-xs text-slate-400">Automations & LLM Pipelines</p>
+            </div>
+          </div>
+          <div class="space-y-3.5">
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Groq Cloud LLMs (Resume Parsing)</span>
+                <span class="text-cyan-400">90%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-purple-400 to-pink-500 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Google Calendar API v3 & Meet</span>
+                <span class="text-cyan-400">88%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-purple-400 to-pink-500 rounded-full" style="width: 88%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">OpenAI, Claude & Gemini APIs</span>
+                <span class="text-cyan-400">85%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-purple-400 to-pink-500 rounded-full" style="width: 85%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">PDF/DOCX Extraction & ExcelJS</span>
+                <span class="text-cyan-400">92%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-purple-400 to-pink-500 rounded-full" style="width: 92%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Safepay, Cloudinary, Nodemailer</span>
+                <span class="text-cyan-400">90%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-purple-400 to-pink-500 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Security & Background Jobs -->
+        <div class="glass-card rounded-2xl p-6 tilt-card">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+            <div
+              class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+              <i class="fas fa-lock"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-lg">Security & Background Jobs</h4>
+              <p class="text-xs text-slate-400">Auth, RBAC & Scheduled Cron</p>
+            </div>
+          </div>
+          <div class="space-y-3.5">
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">JWT & Passport Authentication</span>
+                <span class="text-cyan-400">94%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full" style="width: 94%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Role-Based Access Control (RBAC)</span>
+                <span class="text-cyan-400">90%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Cron Jobs (@nestjs/schedule)</span>
+                <span class="text-cyan-400">88%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full" style="width: 88%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Rate Limiting & bcrypt</span>
+                <span class="text-cyan-400">92%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full" style="width: 92%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Frontend UI Engineering -->
+        <div class="glass-card rounded-2xl p-6 tilt-card">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
+              <i class="fab fa-react"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-lg">Frontend Engineering</h4>
+              <p class="text-xs text-slate-400">React, State & Responsive UI</p>
+            </div>
+          </div>
+          <div class="space-y-3.5">
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">React.js & Modern Hooks</span>
+                <span class="text-cyan-400">90%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Context API & Zustand State</span>
+                <span class="text-cyan-400">86%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full" style="width: 86%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Tailwind CSS & Responsive Layouts</span>
+                <span class="text-cyan-400">94%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full" style="width: 94%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">HTML5, CSS3 & Animations</span>
+                <span class="text-cyan-400">95%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full" style="width: 95%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Observability & DevOps Tools -->
+        <div class="glass-card rounded-2xl p-6 tilt-card">
+          <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+            <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-lg">
+              <i class="fas fa-screwdriver-wrench"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-lg">Tools & Observability</h4>
+              <p class="text-xs text-slate-400">Logging, Versioning & Cloud</p>
+            </div>
+          </div>
+          <div class="space-y-3.5">
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Seq Structured Logging</span>
+                <span class="text-cyan-400">88%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-pink-400 to-rose-500 rounded-full" style="width: 88%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Git, GitHub & Monorepo CI</span>
+                <span class="text-cyan-400">92%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-pink-400 to-rose-500 rounded-full" style="width: 92%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Postman & API Test Suites</span>
+                <span class="text-cyan-400">90%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-pink-400 to-rose-500 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-slate-200">Google Cloud Platform</span>
+                <span class="text-cyan-400">84%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-pink-400 to-rose-500 rounded-full" style="width: 84%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- Certificates Section -->
-    <!-- Certificates Section -->
-<section id="certificates" class="py-20 px-6 fade-in">
-  <div class="max-w-6xl mx-auto">
-
-    <h1 class="text-5xl font-extrabold text-center mb-16">
-      My <span class="text-cyan-400">Certificates</span>
-    </h1>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-      <!-- Certificate 1 -->
-      <div class="project-card">
-        <div class="card-inner">
-
-          <!-- Front -->
-          <div class="card-front gradient-border h-full">
-            <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col items-center justify-center">
-
-              <div class="w-full h-100 mb-4 overflow-hidden rounded-lg">
-                <img
-                  src="data science.jpg"
-                  alt="Data Science 101 Certificate"
-                  class="w-full h-full object-cover"
-                >
-              </div>
-
-              <h1 class="text-2xl font-bold text-center mb-3">
-                Data Science 101 - IBM
-              </h1>
-
-              <div class="mt-auto pt-4 text-center">
-                <span class="text-cyan-400 text-sm font-medium">
-                  Tap for details
-                </span>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Back -->
-          <div class="card-back">
-
-            <h3 class="text-3xl font-bold mb-3">
-              Data Science 101 - IBM
-            </h3>
-
-            <p class="text-gray-300 mb-4">
-              Completed IBM's Data Science 101 certification to strengthen
-              my foundation in data science, data analysis, and machine
-              learning concepts.
-            </p>
-
-            <div class="flex flex-wrap gap-2 mt-4">
-              <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">
-                Data Science
-              </span>
-
-              <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">
-                IBM
-              </span>
-
-              <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">
-                Machine Learning
-              </span>
-            </div>
-
-            <div class="mt-4 text-sm text-gray-400">
-              <p>Issued: March 03, 2025</p>
-              <p>Certificate ID: DSO101EN-AAA00003-A445</p>
-            </div>
-
-          </div>
-
-        </div>
+    <!-- FEATURED PROJECTS SECTION -->
+    <section id="projects" class="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">Production Implementations</h2>
+        <h3 class="text-3xl sm:text-5xl font-extrabold text-white">Featured <span class="text-cyan-400">Projects</span>
+        </h3>
+        <div class="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-4 rounded-full"></div>
       </div>
 
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-      <!-- Certificate 2 -->
-      <div class="project-card">
-        <div class="card-inner">
+        <!-- PROJECT 1: FOLIO3 ATS (Flagship Enterprise Microservice) -->
+        <div
+          class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between tilt-card border border-cyan-500/40 shadow-xl shadow-cyan-500/10 group">
+          <div>
+            <!-- Project Image Container -->
+            <div class="relative h-60 overflow-hidden bg-slate-950">
+              <img src="ats.png" alt="Folio3 ATS Microservice"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+              <div
+                class="absolute top-4 left-4 px-3 py-1 rounded-full bg-cyan-400 text-slate-950 font-mono text-xs font-bold shadow-lg">
+                Enterprise Microservice
+              </div>
+              <div
+                class="absolute top-4 right-4 px-2.5 py-1 rounded-full bg-slate-900/90 border border-slate-700 text-slate-300 font-mono text-xs">
+                Folio3 Pakistan
+              </div>
+            </div>
 
-          <!-- Front -->
-          <div class="card-front gradient-border h-full">
-            <div class="bg-[#111827] rounded-xl p-6 h-full flex flex-col items-center justify-center">
+            <!-- Content -->
+            <div class="p-6 sm:p-7 space-y-4">
+              <h4 class="text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                Applicant Tracking System (ATS)
+              </h4>
+              <p class="text-slate-300 text-sm leading-relaxed">
+                Enterprise recruitment microservice inside an Nx monorepo automating the hiring lifecycle: job
+                requisitions, candidate sourcing, Groq LLM-powered resume parsing (up to 30 files/batch with API key
+                failover), multi-vector duplicate detection, and Google Calendar v3 interview scheduling with
+                auto-generated Meet links.
+              </p>
 
-              <div class="w-full h-100 mb-4 overflow-hidden rounded-lg">
-                <img
-                  src="tensorflow.jpg"
-                  alt="TensorFlow Developer Certificate"
-                  class="w-full h-full object-cover"
-                >
+              <!-- Technical Highlights -->
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 space-y-2">
+                <div class="flex items-center gap-2 text-cyan-300 font-mono">
+                  <i class="fas fa-microchip"></i>
+                  <span>Architecture & Features:</span>
+                </div>
+                <ul class="space-y-1 pl-4 list-disc text-slate-400">
+                  <li>Sequelize PostgreSQL schemas with JSONB and binary CV storage</li>
+                  <li>Deep-link token evaluations & Groq AI feedback summarizer</li>
+                  <li>Automated cron reminders (10m pre-interview) & stage email triggers</li>
+                </ul>
               </div>
 
-              <h1 class="text-2xl font-bold text-center mb-3">
-                TensorFlow Developer
-              </h1>
-
-              <div class="mt-auto pt-4 text-center">
-                <span class="text-cyan-400 text-sm font-medium">
-                  Tap for details
-                </span>
+              <!-- Tech Badges -->
+              <div class="flex flex-wrap gap-1.5 pt-2">
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">NestJS</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">TypeScript</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">PostgreSQL</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">Groq
+                  LLM</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">Nx
+                  Monorepo</span>
               </div>
-
             </div>
           </div>
 
-          <!-- Back -->
-          <div class="card-back">
-
-            <h3 class="text-3xl font-bold mb-3">
-              TensorFlow Developer Certificate
-            </h3>
-
-            <p class="text-gray-300 mb-4">
-              Demonstrates proficiency in building and training neural
-              networks using TensorFlow, including applications in computer
-              vision, natural language processing, and time series analysis.
-            </p>
-
-            <div class="flex flex-wrap gap-2 mt-4">
-              <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">
-                TensorFlow
-              </span>
-
-              <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">
-                Deep Learning
-              </span>
-
-              <span class="px-3 py-1 bg-cyan-400 bg-opacity-20 text-cyan-400 rounded-full text-sm">
-                Neural Networks
-              </span>
-            </div>
-
-            <div class="mt-4 text-sm text-gray-400">
-              <p>Issued: December 16, 2024</p>
-              <p>Certificate ID: TFDC-2024-00123</p>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-    
-   <!-- Contact Section -->
-<section id="contact" class="py-20 px-6 fade-in">
-  <div class="max-w-4xl mx-auto">
-    <h1 class="text-5xl font-extrabold text-center mb-4">
-      Contact <span class="text-cyan-400">Me</span>
-    </h1>
-    <p class="text-center text-gray-400 mb-16 max-w-2xl mx-auto">
-      Have a project in mind or want to discuss opportunities? Feel free to reach out!
-    </p>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-      <div class="gradient-border">
-        <div class="bg-[#111827] rounded-xl p-8 h-full">
-          <h2 class="text-2xl font-bold mb-6">Get in Touch</h2>
-          
-          <div class="space-y-6">
-            <a href="mailto:codecraftbyifrah@gmail.com" class="flex items-start hover:bg-cyan-400 hover:bg-opacity-10 p-2 rounded-lg transition-all duration-300">
-              <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
-                <i class="fas fa-envelope text-cyan-400"></i>
-              </div>
-              <div>
-                <h3 class="font-semibold">Email</h3>
-                <p class="text-gray-400">codecraftbyifrah@gmail.com</p>
-              </div>
-            </a>
-            
-            <a href="https://www.linkedin.com/in/ifra-munawar-436651357" target="_blank" class="flex items-start hover:bg-cyan-400 hover:bg-opacity-10 p-2 rounded-lg transition-all duration-300">
-              <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
-                <i class="fab fa-linkedin-in text-cyan-400"></i>
-              </div>
-              <div>
-                <h3 class="font-semibold">LinkedIn</h3>
-                <p class="text-gray-400">linkedin.com/in/Ifra Munawar</p>
-              </div>
-            </a>
-            
-            <a href="https://github.com/codecraft-by-ifra" target="_blank" class="flex items-start hover:bg-cyan-400 hover:bg-opacity-10 p-2 rounded-lg transition-all duration-300">
-              <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
-                <i class="fab fa-github text-cyan-400"></i>
-              </div>
-              <div>
-                <h3 class="font-semibold">GitHub</h3>
-                <p class="text-gray-400">github.com/codecraft-by-ifra</p>
-              </div>
-            </a>
-            
-            <a href="#" target="_blank" class="flex items-start hover:bg-cyan-400 hover:bg-opacity-10 p-2 rounded-lg transition-all duration-300">
-              <div class="w-12 h-12 rounded-full bg-cyan-400 bg-opacity-10 flex items-center justify-center mr-4">
-                <i class="fas fa-phone text-cyan-400"></i>
-              </div>
-              <div>
-                <h3 class="font-semibold">Phone</h3>
-                <p class="text-gray-400">+923067576748</p>
-              </div>
-            </a>
-          </div>
-          
-          <div class="mt-10 pt-6 border-t border-gray-800">
-            <h3 class="font-semibold mb-4">Based in</h3>
-            <div class="flex items-center">
-              <i class="fas fa-map-marker-alt text-cyan-400 mr-3"></i>
-              <p class="text-gray-400">Kasur, Pakistan</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="gradient-border">
-        <div class="bg-[#111827] rounded-xl p-8 h-full">
-          <h2 class="text-2xl font-bold mb-6">Send a Message</h2>
-          
-          
-          <form action="https://formspree.io/f/myznjyne" method="POST" id="contact-form">
-            <div class="input-group">
-              <input type="text" name="name" class="input-field" required>
-              <label class="input-label">Full Name</label>
-            </div>
-            
-            <div class="input-group">
-              <input type="email" name="email" class="input-field" required>
-              <label class="input-label">Email</label>
-            </div>
-            
-            <div class="input-group">
-              <input type="text" name="subject" class="input-field">
-              <label class="input-label">Subject</label>
-            </div>
-            
-            <div class="input-group">
-              <textarea name="message" class="input-field" rows="4" required></textarea>
-              <label class="input-label">Your Message</label>
-            </div>
-            
-            <button type="submit" class="w-full mt-2 bg-cyan-400 to-blue-500 text-black font-bold py-3 rounded-lg hover:brightness-110 transition-all duration-300 transform hover:scale-[1.02]">
-              Send Message
+          <!-- Bottom Actions -->
+          <div class="p-6 pt-0 border-t border-slate-800/80 mt-4 flex items-center justify-between">
+            <button onclick="openProjectModal('ats')"
+              class="text-cyan-400 hover:text-cyan-300 text-sm font-semibold flex items-center gap-2 transition">
+              <i class="fas fa-circle-info"></i> Full Specifications
             </button>
-            
-           
-            <div id="form-success" class="hidden mt-4 p-4 bg-green-500 bg-opacity-20 text-green-400 rounded-lg text-center">
-              <i class="fas fa-check-circle mr-2"></i>
-              Thank you! Your message has been sent successfully.
+            <span class="text-xs text-slate-500 font-mono">Internal Production</span>
+          </div>
+        </div>
+
+        <!-- PROJECT 2: NOVEXA E-COMMERCE -->
+        <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between tilt-card group">
+          <div>
+            <!-- Project Image Container -->
+            <div class="relative h-60 overflow-hidden bg-slate-950">
+              <img src="Novexa.png" alt="NOVEXA E-Commerce Platform"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+              <div
+                class="absolute top-4 left-4 px-3 py-1 rounded-full bg-blue-500 text-white font-mono text-xs font-bold shadow-lg">
+                Full-Stack MERN
+              </div>
+              <div
+                class="absolute top-4 right-4 px-2.5 py-1 rounded-full bg-slate-900/90 border border-slate-700 text-slate-300 font-mono text-xs">
+                Production-Ready
+              </div>
             </div>
-            
-            
-            <div id="form-error" class="hidden mt-4 p-4 bg-red-500 bg-opacity-20 text-red-400 rounded-lg text-center">
-              <i class="fas fa-exclamation-circle mr-2"></i>
-              Sorry, there was an error sending your message. Please try again.
+
+            <!-- Content -->
+            <div class="p-6 sm:p-7 space-y-4">
+              <h4 class="text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                NOVEXA – E-Commerce Platform
+              </h4>
+              <p class="text-slate-300 text-sm leading-relaxed">
+                Full-stack commerce platform architected with a layered backend (routes → controllers → services →
+                models). Solved order-placement race conditions with MongoDB atomic <code
+                  class="text-cyan-300 font-mono text-xs">findOneAndUpdate</code> operations to eliminate overselling
+                during high concurrent checkouts.
+              </p>
+
+              <!-- Technical Highlights -->
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 space-y-2">
+                <div class="flex items-center gap-2 text-cyan-300 font-mono">
+                  <i class="fas fa-microchip"></i>
+                  <span>Architecture & Features:</span>
+                </div>
+                <ul class="space-y-1 pl-4 list-disc text-slate-400">
+                  <li>Safepay payment gateway & Cloudinary asset pipeline</li>
+                  <li>State-machine order lifecycle with automatic inventory rollback</li>
+                  <li>Comprehensive admin dashboard for inventory, sales & user roles</li>
+                </ul>
+              </div>
+
+              <!-- Tech Badges -->
+              <div class="flex flex-wrap gap-1.5 pt-2">
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-blue-950/60 border border-blue-500/30 text-blue-300">React.js</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-blue-950/60 border border-blue-500/30 text-blue-300">Node.js</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-blue-950/60 border border-blue-500/30 text-blue-300">Express.js</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-blue-950/60 border border-blue-500/30 text-blue-300">MongoDB</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-blue-950/60 border border-blue-500/30 text-blue-300">Safepay</span>
+              </div>
             </div>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="p-6 pt-0 border-t border-slate-800/80 mt-4 flex items-center justify-between">
+            <button onclick="openProjectModal('novexa')"
+              class="text-cyan-400 hover:text-cyan-300 text-sm font-semibold flex items-center gap-2 transition">
+              <i class="fas fa-circle-info"></i> Full Specifications
+            </button>
+            <a href="https://github.com/codecraft-by-ifra/NOVEXA" target="_blank" rel="noopener"
+              class="text-slate-300 hover:text-cyan-400 text-sm font-mono flex items-center gap-1.5 transition">
+              <i class="fab fa-github"></i> Repository
+            </a>
+          </div>
+        </div>
+
+        <!-- PROJECT 3: SMART LECTURE SCHEDULING SYSTEM -->
+        <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between tilt-card group">
+          <div>
+            <!-- Project Image Container -->
+            <div class="relative h-60 overflow-hidden bg-slate-950">
+              <img src="smart.png" alt="Smart Lecture Scheduling System"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+              <div
+                class="absolute top-4 left-4 px-3 py-1 rounded-full bg-emerald-500 text-white font-mono text-xs font-bold shadow-lg">
+                Automated Scheduling
+              </div>
+              <div
+                class="absolute top-4 right-4 px-2.5 py-1 rounded-full bg-slate-900/90 border border-slate-700 text-slate-300 font-mono text-xs">
+                Academic System
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 sm:p-7 space-y-4">
+              <h4 class="text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                Smart Lecture Scheduling System
+              </h4>
+              <p class="text-slate-300 text-sm leading-relaxed">
+                Full-stack scheduling engine for academic institutions that automates timetable allocation with
+                conflict-detection algorithms, preventing room double-booking and faculty schedule overlaps in real
+                time.
+              </p>
+
+              <!-- Technical Highlights -->
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 space-y-2">
+                <div class="flex items-center gap-2 text-cyan-300 font-mono">
+                  <i class="fas fa-microchip"></i>
+                  <span>Architecture & Features:</span>
+                </div>
+                <ul class="space-y-1 pl-4 list-disc text-slate-400">
+                  <li>Automated timetable conflict-matrix solver</li>
+                  <li>Role-based access control for Deans, Faculty & Students</li>
+                  <li>Nodemailer email dispatch for instant room & slot changes</li>
+                </ul>
+              </div>
+
+              <!-- Tech Badges -->
+              <div class="flex flex-wrap gap-1.5 pt-2">
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-emerald-950/60 border border-emerald-500/30 text-emerald-300">Node.js</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-emerald-950/60 border border-emerald-500/30 text-emerald-300">Express.js</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-emerald-950/60 border border-emerald-500/30 text-emerald-300">MongoDB</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-emerald-950/60 border border-emerald-500/30 text-emerald-300">JavaScript</span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono bg-emerald-950/60 border border-emerald-500/30 text-emerald-300">Nodemailer</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="p-6 pt-0 border-t border-slate-800/80 mt-4 flex items-center justify-between">
+            <button onclick="openProjectModal('smart')"
+              class="text-cyan-400 hover:text-cyan-300 text-sm font-semibold flex items-center gap-2 transition">
+              <i class="fas fa-circle-info"></i> Full Specifications
+            </button>
+            <a href="https://github.com/codecraft-by-ifra/Smart-Lecture-System.git" target="_blank" rel="noopener"
+              class="text-slate-300 hover:text-cyan-400 text-sm font-mono flex items-center gap-1.5 transition">
+              <i class="fab fa-github"></i> Repository
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CERTIFICATES & CREDENTIALS SECTION -->
+    <section id="certificates" class="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">Verified Professional Credentials
+        </h2>
+        <h3 class="text-3xl sm:text-5xl font-extrabold text-white">Licenses & <span
+            class="text-cyan-400">Certificates</span></h3>
+        <p class="text-slate-400 text-sm mt-3">Click on any certificate for high-resolution preview and official
+          verification credentials.</p>
+        <div class="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Controls Row: Filter Tabs on Left, Slide Left / Right Arrows on Right -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+
+        <!-- Filter Tabs -->
+        <div class="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+          <button onclick="filterCerts('all')"
+            class="cert-tab active px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-cyan-400 text-black shadow-md shadow-cyan-400/20 transition cursor-pointer">
+            All (5)
+          </button>
+          <button onclick="filterCerts('cloud')"
+            class="cert-tab px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-slate-900 border border-slate-800 text-slate-300 hover:border-cyan-400/40 transition cursor-pointer">
+            Cloud & GCP
+          </button>
+          <button onclick="filterCerts('fullstack')"
+            class="cert-tab px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-slate-900 border border-slate-800 text-slate-300 hover:border-cyan-400/40 transition cursor-pointer">
+            Full-Stack & Java
+          </button>
+          <button onclick="filterCerts('ai')"
+            class="cert-tab px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-slate-900 border border-slate-800 text-slate-300 hover:border-cyan-400/40 transition cursor-pointer">
+            AI & Data Science
+          </button>
+        </div>
+
+        <!-- Slide Left & Right Navigation Buttons -->
+        <div class="flex items-center gap-2">
+          <button id="certSlidePrev" aria-label="Slide Left" title="Slide Left"
+            class="w-11 h-11 rounded-xl bg-slate-900/90 border border-slate-700/80 hover:border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 transition-all flex items-center justify-center shadow-lg active:scale-95 cursor-pointer">
+            <i class="fas fa-chevron-left text-sm"></i>
+          </button>
+          <button id="certSlideNext" aria-label="Slide Right" title="Slide Right"
+            class="w-11 h-11 rounded-xl bg-slate-900/90 border border-slate-700/80 hover:border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 transition-all flex items-center justify-center shadow-lg active:scale-95 cursor-pointer">
+            <i class="fas fa-chevron-right text-sm"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Single-Row Horizontal Carousel / Slider Container -->
+      <div class="relative overflow-hidden">
+        <div id="certsTrack"
+          class="flex gap-6 overflow-x-auto pb-4 pt-2 scroll-smooth snap-x snap-mandatory no-scrollbar select-none cursor-grab active:cursor-grabbing">
+
+          <!-- CERTIFICATE 1: Google Cloud Certified Professional Data Engineer (2026) -->
+          <div
+            class="cert-card cloud flex-shrink-0 w-[310px] sm:w-[370px] md:w-[400px] snap-start glass-card rounded-2xl overflow-hidden flex flex-col justify-between tilt-card cursor-pointer border border-cyan-400/40 shadow-xl shadow-cyan-500/10 group"
+            onclick="openCertModal('gcp')">
+            <div>
+              <div class="relative h-56 bg-slate-950 overflow-hidden p-2">
+                <img src="cert_gcp.png" alt="Google Cloud Certified Professional Data Engineer (2026)"
+                  class="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform duration-300" />
+                <div class="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors"></div>
+                <span
+                  class="absolute top-4 left-4 px-3 py-1 rounded-full bg-cyan-400 text-slate-950 font-mono text-xs font-bold shadow-md">
+                  Google Cloud (2026)
+                </span>
+              </div>
+
+              <div class="p-6 space-y-3">
+                <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+                  <span>Udemy / Deepak Dubey</span>
+                  <span class="text-cyan-400">Nov 10, 2026</span>
+                </div>
+                <h4 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                  Google Cloud Certified Professional Data Engineer (2026)
+                </h4>
+                <p class="text-slate-300 text-xs leading-relaxed">
+                  23 total hours intensive certification covering data pipelines, BigQuery, Cloud Pub/Sub, Dataflow,
+                  Bigtable, and machine learning architectures on GCP.
+                </p>
+                <div
+                  class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 font-mono text-[11px] text-slate-400 truncate">
+                  ID: UC-b57bd999-5547-4b56-80b9-cd286603deb7
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0 border-t border-slate-800 flex items-center justify-between mt-2">
+              <span class="text-cyan-400 text-xs font-mono font-semibold flex items-center gap-1.5">
+                <i class="fas fa-expand"></i> Click to Verify & View
+              </span>
+              <span class="text-xs text-emerald-400 font-mono"><i class="fas fa-shield-check"></i> Verified</span>
+            </div>
+          </div>
+
+          <!-- CERTIFICATE 2: Simplilearn Full-Stack Development 101 -->
+          <div
+            class="cert-card fullstack flex-shrink-0 w-[310px] sm:w-[370px] md:w-[400px] snap-start glass-card rounded-2xl overflow-hidden flex flex-col justify-between tilt-card cursor-pointer border border-slate-800 group"
+            onclick="openCertModal('fullstack')">
+            <div>
+              <div class="relative h-56 bg-slate-950 overflow-hidden p-2">
+                <img src="cert_fullstack.png" alt="Full-Stack Development 101"
+                  class="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform duration-300" />
+                <div class="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors"></div>
+                <span
+                  class="absolute top-4 left-4 px-3 py-1 rounded-full bg-blue-500 text-white font-mono text-xs font-bold shadow-md">
+                  Simplilearn SkillUp
+                </span>
+              </div>
+
+              <div class="p-6 space-y-3">
+                <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+                  <span>Simplilearn</span>
+                  <span class="text-cyan-400">Oct 29, 2026</span>
+                </div>
+                <h4 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                  Full-Stack Development 101
+                </h4>
+                <p class="text-slate-300 text-xs leading-relaxed">
+                  Comprehensive training in full-stack architecture, modern front-end engineering, backend server
+                  mechanics, and responsive design fundamentals.
+                </p>
+                <div
+                  class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 font-mono text-[11px] text-slate-400 truncate">
+                  Code: 10962320
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0 border-t border-slate-800 flex items-center justify-between mt-2">
+              <span class="text-cyan-400 text-xs font-mono font-semibold flex items-center gap-1.5">
+                <i class="fas fa-expand"></i> Click to Verify & View
+              </span>
+              <span class="text-xs text-emerald-400 font-mono"><i class="fas fa-shield-check"></i> Verified</span>
+            </div>
+          </div>
+
+          <!-- CERTIFICATE 3: Simplilearn Full Stack Java Development -->
+          <div
+            class="cert-card fullstack flex-shrink-0 w-[310px] sm:w-[370px] md:w-[400px] snap-start glass-card rounded-2xl overflow-hidden flex flex-col justify-between tilt-card cursor-pointer border border-slate-800 group"
+            onclick="openCertModal('java')">
+            <div>
+              <div class="relative h-56 bg-slate-950 overflow-hidden p-2">
+                <img src="cert_java.png" alt="Getting Started with Full Stack Java Development"
+                  class="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform duration-300" />
+                <div class="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors"></div>
+                <span
+                  class="absolute top-4 left-4 px-3 py-1 rounded-full bg-amber-500 text-slate-950 font-mono text-xs font-bold shadow-md">
+                  Java Full-Stack
+                </span>
+              </div>
+
+              <div class="p-6 space-y-3">
+                <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+                  <span>Simplilearn</span>
+                  <span class="text-cyan-400">Nov 3, 2026</span>
+                </div>
+                <h4 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                  Full Stack Java Development
+                </h4>
+                <p class="text-slate-300 text-xs leading-relaxed">
+                  Verification of fundamental Java full-stack competencies: Object-Oriented design patterns, Java
+                  backend server architectures, MVC development, and database persistence layers.
+                </p>
+                <div
+                  class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 font-mono text-[11px] text-slate-400 truncate">
+                  Code: 10968182
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0 border-t border-slate-800 flex items-center justify-between mt-2">
+              <span class="text-cyan-400 text-xs font-mono font-semibold flex items-center gap-1.5">
+                <i class="fas fa-expand"></i> Click to Verify & View
+              </span>
+              <span class="text-xs text-emerald-400 font-mono"><i class="fas fa-shield-check"></i> Verified</span>
+            </div>
+          </div>
+
+          <!-- CERTIFICATE 4: IBM Data Science 101 -->
+          <div
+            class="cert-card ai flex-shrink-0 w-[310px] sm:w-[370px] md:w-[400px] snap-start glass-card rounded-2xl overflow-hidden flex flex-col justify-between tilt-card cursor-pointer border border-slate-800 group"
+            onclick="openCertModal('ibm')">
+            <div>
+              <div class="relative h-56 bg-slate-950 overflow-hidden p-2">
+                <img src="data science.jpg" alt="Data Science 101 - IBM"
+                  class="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform duration-300" />
+                <div class="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors"></div>
+                <span
+                  class="absolute top-4 left-4 px-3 py-1 rounded-full bg-indigo-500 text-white font-mono text-xs font-bold shadow-md">
+                  IBM Cognitive Class
+                </span>
+              </div>
+
+              <div class="p-6 space-y-3">
+                <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+                  <span>IBM</span>
+                  <span class="text-cyan-400">March 3, 2025</span>
+                </div>
+                <h4 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                  Data Science 101
+                </h4>
+                <p class="text-slate-300 text-xs leading-relaxed">
+                  Strengthened deep foundational knowledge in data science principles, data analysis methodologies,
+                  regression models, classification frameworks, and real-world analytical applications.
+                </p>
+                <div
+                  class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 font-mono text-[11px] text-slate-400 truncate">
+                  ID: DSO101EN-AAA00003-A445
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0 border-t border-slate-800 flex items-center justify-between mt-2">
+              <span class="text-cyan-400 text-xs font-mono font-semibold flex items-center gap-1.5">
+                <i class="fas fa-expand"></i> Click to Verify & View
+              </span>
+              <span class="text-xs text-emerald-400 font-mono"><i class="fas fa-shield-check"></i> Verified</span>
+            </div>
+          </div>
+
+          <!-- CERTIFICATE 5: TensorFlow Developer -->
+          <div
+            class="cert-card ai flex-shrink-0 w-[310px] sm:w-[370px] md:w-[400px] snap-start glass-card rounded-2xl overflow-hidden flex flex-col justify-between tilt-card cursor-pointer border border-slate-800 group"
+            onclick="openCertModal('tf')">
+            <div>
+              <div class="relative h-56 bg-slate-950 overflow-hidden p-2">
+                <img src="tensorflow.jpg" alt="TensorFlow Developer Certificate"
+                  class="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform duration-300" />
+                <div class="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors"></div>
+                <span
+                  class="absolute top-4 left-4 px-3 py-1 rounded-full bg-orange-500 text-white font-mono text-xs font-bold shadow-md">
+                  Deep Learning
+                </span>
+              </div>
+
+              <div class="p-6 space-y-3">
+                <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+                  <span>TensorFlow</span>
+                  <span class="text-cyan-400">Dec 16, 2024</span>
+                </div>
+                <h4 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                  TensorFlow Developer Certificate
+                </h4>
+                <p class="text-slate-300 text-xs leading-relaxed">
+                  Demonstrated practical skills in neural networks, convolutional vision models, NLP tokenization, and
+                  deep learning pipeline training.
+                </p>
+                <div
+                  class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 font-mono text-[11px] text-slate-400 truncate">
+                  ID: TFDC-2024-00123
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0 border-t border-slate-800 flex items-center justify-between mt-2">
+              <span class="text-cyan-400 text-xs font-mono font-semibold flex items-center gap-1.5">
+                <i class="fas fa-expand"></i> Click to Verify & View
+              </span>
+              <span class="text-xs text-emerald-400 font-mono"><i class="fas fa-shield-check"></i> Verified</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Slide Bar / Progress Indicator -->
+      <div class="mt-6 flex flex-col items-center gap-2">
+        <div
+          class="w-full max-w-md h-2 rounded-full bg-slate-800/90 overflow-hidden relative border border-slate-700/60 shadow-inner">
+          <div id="certSlideBar"
+            class="h-full bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-500 rounded-full w-1/4 transition-all duration-150 shadow-sm shadow-cyan-400/50">
+          </div>
+        </div>
+        <div class="flex items-center justify-between w-full max-w-md text-xs font-mono text-slate-400 px-1">
+          <span id="certSlideCounter" class="text-cyan-300 font-semibold">1 of 5</span>
+          <span class="text-slate-400 flex items-center gap-1.5"><i class="fas fa-arrows-left-right text-cyan-400"></i>
+            Slide left/right to view</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- EDUCATION TIMELINE SECTION -->
+    <section id="education" class="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">Academic Background</h2>
+        <h3 class="text-3xl sm:text-5xl font-extrabold text-white">Education & <span
+            class="text-cyan-400">Credentials</span></h3>
+        <div class="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <div class="max-w-4xl mx-auto relative">
+        <!-- Center Timeline Bar -->
+        <div
+          class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-400 via-blue-500 to-slate-800 -translate-x-1/2">
+        </div>
+
+        <!-- Item 1: University (BSCS) -->
+        <div class="relative flex flex-col md:flex-row items-center justify-between mb-12 md:mb-16 group">
+          <div class="w-full md:w-5/12 pl-12 md:pl-0 md:text-right order-2 md:order-1">
+            <div class="glass-card p-6 rounded-2xl tilt-card border border-cyan-400/40">
+              <span
+                class="inline-block px-3 py-1 rounded-full text-xs font-mono bg-cyan-400/10 text-cyan-300 border border-cyan-400/30 mb-2">2021
+                – 2025</span>
+              <h4 class="text-xl font-bold text-white">BS in Computer Science</h4>
+              <p class="text-cyan-400 font-medium text-sm mt-0.5">Government College University, Faisalabad (GCUF)</p>
+              <div
+                class="mt-2 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-bold">
+                CGPA: 3.60 / 4.00
+              </div>
+              <p class="text-slate-300 text-xs mt-3 leading-relaxed">
+                Focused on data structures, algorithms, advanced database management systems, distributed systems, and
+                software architecture.
+              </p>
+            </div>
+          </div>
+          <!-- Node Dot -->
+          <div
+            class="absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-slate-950 border-2 border-cyan-400 timeline-dot flex items-center justify-center z-10 order-1">
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+          </div>
+          <div class="w-full md:w-5/12 hidden md:block order-3"></div>
+        </div>
+
+        <!-- Item 2: College (FSc Pre-Engineering) -->
+        <div class="relative flex flex-col md:flex-row items-center justify-between mb-12 md:mb-16 group">
+          <div class="w-full md:w-5/12 hidden md:block order-1"></div>
+          <!-- Node Dot -->
+          <div
+            class="absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-slate-950 border-2 border-blue-400 timeline-dot flex items-center justify-center z-10 order-1">
+            <span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span>
+          </div>
+          <div class="w-full md:w-5/12 pl-12 md:pl-0 order-2 md:order-3">
+            <div class="glass-card p-6 rounded-2xl tilt-card border border-slate-800">
+              <span
+                class="inline-block px-3 py-1 rounded-full text-xs font-mono bg-blue-500/10 text-blue-300 border border-blue-500/30 mb-2">2019
+                – 2021</span>
+              <h4 class="text-xl font-bold text-white">Intermediate (FSc Pre-Engineering)</h4>
+              <p class="text-blue-400 font-medium text-sm mt-0.5">PIASS College</p>
+              <div
+                class="mt-2 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-bold">
+                Score: 1029 / 1100 (93.5%)
+              </div>
+              <p class="text-slate-300 text-xs mt-3 leading-relaxed">
+                Strong focus on higher mathematics, analytical reasoning, and physics, cultivating structured logical
+                problem solving.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3: High School (Matriculation) -->
+        <div class="relative flex flex-col md:flex-row items-center justify-between group">
+          <div class="w-full md:w-5/12 pl-12 md:pl-0 md:text-right order-2 md:order-1">
+            <div class="glass-card p-6 rounded-2xl tilt-card border border-slate-800">
+              <span
+                class="inline-block px-3 py-1 rounded-full text-xs font-mono bg-slate-800 text-slate-300 border border-slate-700 mb-2">2019</span>
+              <h4 class="text-xl font-bold text-white">Matriculation in Science</h4>
+              <p class="text-slate-400 font-medium text-sm mt-0.5">Govt. MC Girls High School</p>
+              <p class="text-slate-300 text-xs mt-3 leading-relaxed">
+                Graduated with distinction in Science subjects, establishing early discipline in computer science and
+                mathematical fundamentals.
+              </p>
+            </div>
+          </div>
+          <!-- Node Dot -->
+          <div
+            class="absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-slate-950 border-2 border-slate-600 timeline-dot flex items-center justify-center z-10 order-1">
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+          </div>
+          <div class="w-full md:w-5/12 hidden md:block order-3"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTACT & GET IN TOUCH SECTION -->
+    <section id="contact" class="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">Direct Communication</h2>
+        <h3 class="text-3xl sm:text-5xl font-extrabold text-white">Get in <span class="text-cyan-400">Touch</span></h3>
+        <p class="text-slate-400 text-sm mt-3">Open for full-time software engineering roles, technical collaboration,
+          and enterprise backend opportunities.</p>
+        <div class="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch max-w-5xl mx-auto">
+
+        <!-- Contact Details Card -->
+        <div class="lg:col-span-5 glass-card rounded-2xl p-8 flex flex-col justify-between border border-slate-800">
+          <div>
+            <h4 class="text-2xl font-bold text-white mb-2">Contact Details</h4>
+            <p class="text-sm text-slate-400 mb-8">Feel free to connect directly via email, phone, or LinkedIn.</p>
+
+            <div class="space-y-5">
+              <!-- Email Item -->
+              <div
+                class="flex items-center justify-between p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-cyan-400/40 transition group">
+                <a href="mailto:codecraftbyifrah@gmail.com" class="flex items-center gap-3.5 min-w-0">
+                  <div
+                    class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div class="min-w-0">
+                    <div class="text-xs text-slate-400 font-mono">Email Address</div>
+                    <div class="text-sm font-semibold text-white truncate group-hover:text-cyan-400 transition-colors">
+                      codecraftbyifrah@gmail.com</div>
+                  </div>
+                </a>
+                <button onclick="copyToClipboard('codecraftbyifrah@gmail.com', 'Email copied!')" title="Copy Email"
+                  class="p-2 text-slate-400 hover:text-cyan-400 transition">
+                  <i class="far fa-copy"></i>
+                </button>
+              </div>
+
+              <!-- Phone Item -->
+              <div
+                class="flex items-center justify-between p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-cyan-400/40 transition group">
+                <a href="tel:+923067573838" class="flex items-center gap-3.5 min-w-0">
+                  <div
+                    class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-phone"></i>
+                  </div>
+                  <div class="min-w-0">
+                    <div class="text-xs text-slate-400 font-mono">Phone & WhatsApp</div>
+                    <div class="text-sm font-semibold text-white truncate group-hover:text-cyan-400 transition-colors">
+                      +92 306 7573838</div>
+                  </div>
+                </a>
+                <button onclick="copyToClipboard('+923067573838', 'Phone number copied!')" title="Copy Phone"
+                  class="p-2 text-slate-400 hover:text-cyan-400 transition">
+                  <i class="far fa-copy"></i>
+                </button>
+              </div>
+
+              <!-- LinkedIn Item -->
+              <a href="https://www.linkedin.com/in/ifra-munawar-436651357" target="_blank" rel="noopener"
+                class="flex items-center gap-3.5 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-cyan-400/40 transition group">
+                <div
+                  class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <i class="fab fa-linkedin-in"></i>
+                </div>
+                <div>
+                  <div class="text-xs text-slate-400 font-mono">LinkedIn Profile</div>
+                  <div class="text-sm font-semibold text-white group-hover:text-cyan-400 transition-colors">
+                    in/ifra-munawar-436651357</div>
+                </div>
+              </a>
+
+              <!-- GitHub Item -->
+              <a href="https://github.com/codecraft-by-ifra" target="_blank" rel="noopener"
+                class="flex items-center gap-3.5 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-cyan-400/40 transition group">
+                <div
+                  class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <i class="fab fa-github"></i>
+                </div>
+                <div>
+                  <div class="text-xs text-slate-400 font-mono">GitHub Profile</div>
+                  <div class="text-sm font-semibold text-white group-hover:text-cyan-400 transition-colors">
+                    github.com/codecraft-by-ifra</div>
+                </div>
+              </a>
+
+              <!-- Location Item -->
+              <div class="flex items-center gap-3.5 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <div
+                  class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-map-location-dot"></i>
+                </div>
+                <div>
+                  <div class="text-xs text-slate-400 font-mono">Current Location</div>
+                  <div class="text-sm font-semibold text-white">Lahore, Punjab, Pakistan</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-8 mt-6 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs text-slate-500 font-mono">Availability: Full-Time</span>
+          </div>
+        </div>
+
+        <!-- Contact Form Card -->
+        <div class="lg:col-span-7 glass-card rounded-2xl p-8 border border-slate-800 relative">
+          <h4 class="text-2xl font-bold text-white mb-2">Send a Message</h4>
+          <p class="text-sm text-slate-400 mb-6">Leave an inquiry or project brief below, and I will reply promptly.</p>
+
+          <form action="https://formspree.io/f/myznjyne" method="POST" id="contactForm" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-mono text-slate-400 mb-1">Your Name</label>
+                <input type="text" name="name" required placeholder="John Doe"
+                  class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition text-sm" />
+              </div>
+              <div>
+                <label class="block text-xs font-mono text-slate-400 mb-1">Your Email</label>
+                <input type="email" name="email" required placeholder="john@example.com"
+                  class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition text-sm" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono text-slate-400 mb-1">Subject</label>
+              <input type="text" name="subject" required placeholder="Software Engineer Opportunity / Project Inquiry"
+                class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition text-sm" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-mono text-slate-400 mb-1">Your Message</label>
+              <textarea name="message" rows="5" required
+                placeholder="Describe your project, opportunity or message in detail..."
+                class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition text-sm"></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn"
+              class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-bold text-sm tracking-wide uppercase hover:brightness-110 shadow-lg shadow-cyan-500/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+              <i class="fas fa-paper-plane"></i>
+              <span>Send Message</span>
+            </button>
+
+            <div id="formStatus" class="hidden p-4 rounded-xl text-center text-sm font-medium"></div>
           </form>
         </div>
+
       </div>
-    </div>
-  </div>
-</section>
+    </section>
+
   </main>
 
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-900 bg-[#02050c] py-12 px-6 lg:px-12 relative z-10">
+    <div
+      class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <div class="space-y-1">
+        <div class="flex items-center justify-center md:justify-start gap-2 text-lg font-bold text-white">
+          <span>IFRA</span>
+          <span class="text-cyan-400">MUNAWAR</span>
+        </div>
+        <p class="text-xs text-slate-500 font-mono">Software Engineer • NestJS & Full-Stack Specialist • Folio3 Pakistan
+        </p>
+      </div>
 
-  <footer class="bg-black bg-opacity-50 border-t border-gray-800 py-4">
-    <div class="mt-4 text-center text-gray-500 text-sm">
-      <p>© 2023 Ifra Munawar. All rights reserved.</p>
-      <p class="mt-1">Crafted with <i class="fas fa-heart text-cyan-400"></i> for MERN Developer</p>
+      <div class="flex items-center gap-4 text-slate-400 text-sm">
+        <a href="#home" class="hover:text-cyan-400 transition">Back to Top</a>
+        <span>•</span>
+        <a href="CV.pdf" download class="hover:text-cyan-400 transition">Download CV</a>
+        <span>•</span>
+        <a href="https://github.com/codecraft-by-ifra" target="_blank" rel="noopener"
+          class="hover:text-cyan-400 transition">GitHub</a>
+      </div>
+
+      <div class="text-xs text-slate-500 font-mono">
+        © 2026 Ifra Munawar. Built with clean architecture & 3D WebGL.
+      </div>
     </div>
   </footer>
 
-
-  <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-cyan-400 text-black flex items-center justify-center shadow-lg transform transition hover:scale-110 hidden">
+  <!-- FLOATING BACK-TO-TOP BUTTON -->
+  <button id="backToTopBtn" aria-label="Back to Top"
+    class="fixed bottom-6 right-6 w-12 h-12 rounded-xl bg-cyan-400 text-slate-950 shadow-xl shadow-cyan-400/30 flex items-center justify-center text-lg z-40 transform translate-y-24 opacity-0 transition-all duration-300 hover:scale-110 active:scale-95">
     <i class="fas fa-arrow-up"></i>
   </button>
 
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <!-- CERTIFICATE LIGHTBOX MODAL -->
+  <div id="certModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 modal-backdrop">
+    <div
+      class="glass-card rounded-2xl max-w-4xl w-full border border-cyan-400/40 p-6 sm:p-8 relative max-h-[92vh] overflow-y-auto space-y-6">
+
+      <!-- Close Button -->
+      <button onclick="closeCertModal()"
+        class="absolute top-4 right-4 w-10 h-10 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-cyan-400 hover:border-cyan-400 flex items-center justify-center text-lg transition z-20">
+        <i class="fas fa-xmark"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="pr-12 space-y-1">
+        <div id="modalCertCategory" class="text-xs font-mono text-cyan-400 uppercase tracking-wider">Credential Detail
+        </div>
+        <h3 id="modalCertTitle" class="text-2xl sm:text-3xl font-bold text-white">Certificate Title</h3>
+        <p id="modalCertIssuer" class="text-xs sm:text-sm text-slate-400 font-mono">Issuer & Date</p>
+      </div>
+
+      <!-- Certificate Image Preview with Cyber Border -->
+      <div
+        class="relative bg-slate-950 rounded-xl border border-slate-800 p-2 sm:p-4 flex items-center justify-center min-h-[300px]">
+        <img id="modalCertImg" src="" alt="Certificate Preview"
+          class="max-h-[60vh] w-auto max-w-full rounded-lg shadow-2xl object-contain" />
+      </div>
+
+      <!-- Description & Verification Actions -->
+      <div class="space-y-4">
+        <p id="modalCertDesc" class="text-sm text-slate-300 leading-relaxed"></p>
+
+        <div
+          class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
+          <div class="text-slate-300">
+            <span class="text-slate-500">Identifier: </span>
+            <span id="modalCertId" class="text-cyan-300 font-bold"></span>
+          </div>
+          <div class="flex items-center gap-3">
+            <a id="modalCertVerifyLink" href="#" target="_blank" rel="noopener"
+              class="px-4 py-2 rounded-lg bg-cyan-400 text-slate-950 font-bold hover:brightness-110 transition flex items-center gap-2">
+              <i class="fas fa-arrow-up-right-from-square"></i> Verify Online
+            </a>
+            <a id="modalCertDownloadLink" href="#" download
+              class="px-4 py-2 rounded-lg bg-slate-800 text-white font-semibold hover:bg-slate-700 transition flex items-center gap-2">
+              <i class="fas fa-download"></i> Download File
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PROJECT DEEP DIVE MODAL -->
+  <div id="projectModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 modal-backdrop">
+    <div
+      class="glass-card rounded-2xl max-w-4xl w-full border border-cyan-400/40 p-6 sm:p-8 relative max-h-[92vh] overflow-y-auto space-y-6">
+
+      <!-- Close Button -->
+      <button onclick="closeProjectModal()"
+        class="absolute top-4 right-4 w-10 h-10 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-cyan-400 hover:border-cyan-400 flex items-center justify-center text-lg transition z-20">
+        <i class="fas fa-xmark"></i>
+      </button>
+
+      <div class="pr-12 space-y-1">
+        <div id="projModalTag" class="text-xs font-mono text-cyan-400 uppercase tracking-wider">Architecture Deep Dive
+        </div>
+        <h3 id="projModalTitle" class="text-2xl sm:text-3xl font-bold text-white">Project Title</h3>
+        <p id="projModalSubtitle" class="text-xs sm:text-sm text-slate-400 font-mono">Stack & Environment</p>
+      </div>
+
+      <div class="relative bg-slate-950 rounded-xl border border-slate-800 p-2 overflow-hidden">
+        <img id="projModalImg" src="" alt="Project Visual" class="w-full max-h-[380px] object-cover rounded-lg" />
+      </div>
+
+      <div id="projModalBody" class="space-y-4 text-slate-300 text-sm leading-relaxed"></div>
+
+      <div class="pt-4 border-t border-slate-800 flex items-center justify-between flex-wrap gap-4">
+        <div id="projModalBadges" class="flex flex-wrap gap-1.5"></div>
+        <div id="projModalActions" class="flex items-center gap-3"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: THREE.JS 3D CANVAS, TILT, TYPEWRITER, MODALS & INTERACTIONS -->
   <script>
-    // Particles.js config
-    particlesJS("particles-js", {
-      particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
-        color: { value: "#00fff7" },
-        shape: { type: "circle" },
-        opacity: { value: 0.5, random: true },
-        size: { value: 3, random: true },
-        line_linked: {
-          enable: true,
-          distance: 150,
-          color: "#00fff7",
-          opacity: 0.2,
-          width: 1
-        },
-        move: {
-          enable: true,
-          speed: 2,
-          direction: "none",
-          random: true,
-          straight: false,
-          out_mode: "out",
-          bounce: false
-        }
-      },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: { enable: true, mode: "grab" },
-          onclick: { enable: true, mode: "push" }
-        },
-        modes: {
-          grab: { distance: 140, line_linked: { opacity: 0.5 } },
-          push: { particles_nb: 4 }
-        }
-      },
-      retina_detect: true
-    });
-    
+      /* =========================================================================
+         1. THREE.JS 3D INTERACTIVE PARTICLE NEBULA CANVAS
+         ========================================================================= */
+      (function init3D() {
+        const canvas = document.getElementById('canvas3d');
+        if (!canvas || typeof THREE === 'undefined') return;
 
-    const progressBar = document.getElementById('progress-bar');
-    window.addEventListener('scroll', () => {
-      const totalHeight = document.body.scrollHeight - window.innerHeight;
-      const progress = (window.pageYOffset / totalHeight) * 100;
-      progressBar.style.width = `${progress}%`;
-    });
-    
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 25;
 
-    const backToTopBtn = document.getElementById('back-to-top');
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 300) {
-        backToTopBtn.classList.remove('hidden');
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Particle Geometry
+        const particleCount = 1200;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+
+        const colorCyan = new THREE.Color('#00fff7');
+        const colorBlue = new THREE.Color('#3b82f6');
+        const colorPurple = new THREE.Color('#8b5cf6');
+
+        for (let i = 0; i < particleCount; i++) {
+          const i3 = i * 3;
+          positions[i3] = (Math.random() - 0.5) * 60;
+          positions[i3 + 1] = (Math.random() - 0.5) * 60;
+          positions[i3 + 2] = (Math.random() - 0.5) * 50;
+
+          const mixColor = Math.random() < 0.6 ? colorCyan : (Math.random() < 0.8 ? colorBlue : colorPurple);
+          colors[i3] = mixColor.r;
+          colors[i3 + 1] = mixColor.g;
+          colors[i3 + 2] = mixColor.b;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        // Point Sprite Texture for soft glowing dots
+        const particleTexture = (function createDot() {
+          const canvas = document.createElement('canvas');
+          canvas.width = 32;
+          canvas.height = 32;
+          const ctx = canvas.getContext('2d');
+          const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+          grad.addColorStop(0, 'rgba(255,255,255,1)');
+          grad.addColorStop(0.3, 'rgba(0,255,247,0.8)');
+          grad.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(16, 16, 16, 0, Math.PI * 2);
+          ctx.fill();
+          return new THREE.CanvasTexture(canvas);
+        })();
+
+        const material = new THREE.PointsMaterial({
+          size: 0.6,
+          vertexColors: true,
+          map: particleTexture,
+          transparent: true,
+          opacity: 0.75,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        });
+
+        const particleSystem = new THREE.Points(geometry, material);
+        scene.add(particleSystem);
+
+        // Subtle Wireframe Icosahedron in the Background
+        const icoGeo = new THREE.IcosahedronGeometry(10, 1);
+        const icoMat = new THREE.MeshBasicMaterial({
+          color: 0x00fff7,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.08
+        });
+        const icoMesh = new THREE.Mesh(icoGeo, icoMat);
+        scene.add(icoMesh);
+
+        // Mouse interactivity
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+          mouseX = (e.clientX - window.innerWidth / 2) * 0.001;
+          mouseY = (e.clientY - window.innerHeight / 2) * 0.001;
+        });
+
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        function animate() {
+          requestAnimationFrame(animate);
+
+          targetX += (mouseX - targetX) * 0.05;
+          targetY += (mouseY - targetY) * 0.05;
+
+          particleSystem.rotation.y += 0.0008;
+          particleSystem.rotation.x += 0.0004;
+
+          icoMesh.rotation.y -= 0.0012;
+          icoMesh.rotation.x -= 0.0006;
+
+          particleSystem.position.x = targetX * 10;
+          particleSystem.position.y = -targetY * 10;
+
+          renderer.render(scene, camera);
+        }
+        animate();
+      })();
+
+    /* =========================================================================
+       2. TYPEWRITER EFFECT
+       ========================================================================= */
+    const typewriterEl = document.getElementById('typewriter');
+    const roles = [
+      "Software Engineer",
+      "NestJS & Backend Specialist",
+      "Full-Stack MERN Developer",
+      "Enterprise ATS Architect @ Folio3",
+      "Google Cloud Certified (2026)",
+      "AI & LLM Integration Engineer"
+    ];
+    let roleIdx = 0;
+    let charIdx = 0;
+    let isDeleting = false;
+
+    function handleTypewriter() {
+      const currentRole = roles[roleIdx];
+      if (isDeleting) {
+        typewriterEl.textContent = currentRole.substring(0, charIdx - 1);
+        charIdx--;
       } else {
-        backToTopBtn.classList.add('hidden');
+        typewriterEl.textContent = currentRole.substring(0, charIdx + 1);
+        charIdx++;
       }
+
+      let typingSpeed = isDeleting ? 40 : 80;
+
+      if (!isDeleting && charIdx === currentRole.length) {
+        typingSpeed = 2000;
+        isDeleting = true;
+      } else if (isDeleting && charIdx === 0) {
+        isDeleting = false;
+        roleIdx = (roleIdx + 1) % roles.length;
+        typingSpeed = 500;
+      }
+
+      setTimeout(handleTypewriter, typingSpeed);
+    }
+    setTimeout(handleTypewriter, 500);
+
+    /* =========================================================================
+       3. 3D TILT EFFECT FOR CARDS
+       ========================================================================= */
+    function initTiltCards() {
+      const tiltCards = document.querySelectorAll('.tilt-card');
+      tiltCards.forEach(card => {
+        const glare = card.querySelector('.card-glare');
+
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          const rotateX = ((y - centerY) / centerY) * -10;
+          const rotateY = ((x - centerX) / centerX) * 10;
+
+          card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+
+          if (glare) {
+            glare.style.opacity = '1';
+            glare.style.background = `radial-gradient(circle at ${(x / rect.width) * 100}% ${(y / rect.height) * 100}%, rgba(255,255,255,0.18) 0%, transparent 60%)`;
+          }
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+          if (glare) {
+            glare.style.opacity = '0';
+          }
+        });
+      });
+    }
+    initTiltCards();
+
+    /* =========================================================================
+       4. SCROLL PROGRESS & ACTIVE NAVIGATION
+       ========================================================================= */
+    const progressBar = document.getElementById('scrollProgressBar');
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section');
+
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (progressBar) progressBar.style.width = scrolled + '%';
+
+      // Back to top button visibility
+      if (winScroll > 400) {
+        backToTopBtn.classList.remove('translate-y-24', 'opacity-0');
+      } else {
+        backToTopBtn.classList.add('translate-y-24', 'opacity-0');
+      }
+
+      // Active Section Highlighting
+      let currentSection = '';
+      sections.forEach(section => {
+        const top = section.offsetTop - 120;
+        const height = section.offsetHeight;
+        if (winScroll >= top && winScroll < top + height) {
+          currentSection = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('text-cyan-400', 'bg-slate-800/40');
+        if (link.getAttribute('href') === '#' + currentSection) {
+          link.classList.add('text-cyan-400', 'bg-slate-800/40');
+        }
+      });
     });
-    
+
     backToTopBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    
-    const navToggle = document.getElementById("nav-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-    
-    navToggle.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
+
+    /* =========================================================================
+       5. MOBILE MENU TOGGLE
+       ========================================================================= */
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuIcon = document.getElementById('menuIcon');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.toggle('hidden');
+      if (!isHidden) {
+        menuIcon.classList.replace('fa-bars', 'fa-xmark');
+      } else {
+        menuIcon.classList.replace('fa-xmark', 'fa-bars');
+      }
     });
 
-    mobileMenu.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        mobileMenu.classList.add("hidden");
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuIcon.classList.replace('fa-xmark', 'fa-bars');
       });
     });
-    
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
+
+    /* =========================================================================
+       6. CLIPBOARD COPY & TOAST NOTIFICATION
+       ========================================================================= */
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.textContent = message;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
+    }
+
+    function copyToClipboard(text, msg) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(msg || 'Copied to clipboard!');
+      }).catch(() => {
+        showToast('Copied: ' + text);
+      });
+    }
+
+    /* =========================================================================
+       7. CERTIFICATE MODAL & LIGHTBOX DATA
+       ========================================================================= */
+    const certData = {
+      gcp: {
+        category: 'Google Cloud Platform • Professional Credential',
+        title: 'Google Cloud Certified Professional Data Engineer (2026)',
+        issuer: 'Udemy • Instructor: Deepak Dubey | Date: Nov 10, 2026 (23 Total Hours)',
+        img: 'cert_gcp.png',
+        desc: 'Advanced enterprise data engineering certification verifying proficiency in architecting reliable data processing systems, BigQuery analytics, streaming architectures with Cloud Pub/Sub and Dataflow, operational data storage with Cloud Bigtable, scalable migrations, and production machine learning deployments.',
+        id: 'UC-b57bd999-5547-4b56-80b9-cd286603deb7',
+        verifyUrl: 'https://ude.my/UC-b57bd999-5547-4b56-80b9-cd286603deb7',
+        downloadFile: 'cloud_cert.pdf'
+      },
+      fullstack: {
+        category: 'Full-Stack Web Development • Simplilearn SkillUp',
+        title: 'Full-Stack Development 101',
+        issuer: 'Simplilearn SkillUp • Issued: 29th October 2026 (Krishna Kumar, CEO)',
+        img: 'cert_fullstack.png',
+        desc: 'Demonstrated initiative and verified commitment to mastering full-stack software development principles, modern frontend and backend architectures, clean API integrations, and scalable client-server communications.',
+        id: '10962320',
+        verifyUrl: 'https://www.simplilearn.com/skillup-certificate',
+        downloadFile: 'fullstack_cert.pdf'
+      },
+      java: {
+        category: 'Enterprise Java Development • Simplilearn SkillUp',
+        title: 'Getting Started with Full Stack Java Development',
+        issuer: 'Simplilearn SkillUp • Issued: 3rd November 2026 (Krishna Kumar, CEO)',
+        img: 'cert_java.png',
+        desc: 'Verification of fundamental Java full-stack competencies: Object-Oriented design patterns, Java backend server architectures, MVC development, and database persistence layers.',
+        id: '10968182',
+        verifyUrl: 'https://www.simplilearn.com/skillup-certificate',
+        downloadFile: 'java_cert.pdf'
+      },
+      ibm: {
+        category: 'Data Science & Analysis • IBM Cognitive Class',
+        title: 'Data Science 101 - IBM',
+        issuer: 'IBM • Issued: March 03, 2025',
+        img: 'data science.jpg',
+        desc: 'Strengthened deep foundational knowledge in data science principles, data analysis methodologies, regression models, classification frameworks, and real-world analytical applications.',
+        id: 'DSO101EN-AAA00003-A445',
+        verifyUrl: 'https://cognitiveclass.ai/',
+        downloadFile: 'data science.jpg'
+      },
+      tf: {
+        category: 'Deep Learning & Neural Networks • TensorFlow',
+        title: 'TensorFlow Developer Certificate',
+        issuer: 'TensorFlow • Issued: December 16, 2024',
+        img: 'tensorflow.jpg',
+        desc: 'Demonstrated technical proficiency in designing, training, and fine-tuning deep neural networks using TensorFlow, encompassing computer vision convolutional layers, text tokenization in NLP, and time series predictive models.',
+        id: 'TFDC-2024-00123',
+        verifyUrl: 'https://www.tensorflow.org/certificate',
+        downloadFile: 'tensorflow.jpg'
+      }
+    };
+
+    function openCertModal(key) {
+      const data = certData[key];
+      if (!data) return;
+
+      document.getElementById('modalCertCategory').textContent = data.category;
+      document.getElementById('modalCertTitle').textContent = data.title;
+      document.getElementById('modalCertIssuer').textContent = data.issuer;
+      document.getElementById('modalCertImg').src = data.img;
+      document.getElementById('modalCertDesc').textContent = data.desc;
+      document.getElementById('modalCertId').textContent = data.id;
+      document.getElementById('modalCertVerifyLink').href = data.verifyUrl;
+      document.getElementById('modalCertDownloadLink').href = data.downloadFile;
+
+      const modal = document.getElementById('certModal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCertModal() {
+      document.getElementById('certModal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('certModal').addEventListener('click', (e) => {
+      if (e.target.id === 'certModal') closeCertModal();
+    });
+
+    /* Certificate Filtering */
+    function filterCerts(category) {
+      const cards = document.querySelectorAll('.cert-card');
+      const tabs = document.querySelectorAll('.cert-tab');
+      const eventTarget = window.event ? window.event.target : null;
+
+      tabs.forEach(tab => {
+        tab.classList.remove('bg-cyan-400', 'text-black', 'shadow-md', 'shadow-cyan-400/20');
+        tab.classList.add('bg-slate-900', 'text-slate-300');
+      });
+      if (eventTarget) {
+        eventTarget.classList.remove('bg-slate-900', 'text-slate-300');
+        eventTarget.classList.add('bg-cyan-400', 'text-black', 'shadow-md', 'shadow-cyan-400/20');
+      }
+
+      cards.forEach(card => {
+        if (category === 'all' || card.classList.contains(category)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      const track = document.getElementById('certsTrack');
+      if (track) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      }
+    }
+
+    /* =========================================================================
+       8. PROJECT DETAILS MODAL
+       ========================================================================= */
+    const projectDetails = {
+      ats: {
+        tag: 'Enterprise Microservice • Folio3 Pakistan',
+        title: 'Applicant Tracking System (ATS)',
+        subtitle: 'NestJS • TypeScript • PostgreSQL • Sequelize • Nx Monorepo • Groq LLM',
+        img: 'ats.png',
+        body: `
+          <h4 class="text-white font-bold text-base mb-1">Architecture & Engineering Overview</h4>
+          <p class="mb-3">Developing the enterprise recruitment microservice for the internal Folio3 Portal as a standalone NestJS microservice inside a shared Nx monorepo. It centralizes talent sourcing and accelerates the full hiring lifecycle across HR recruiters, line managers, and executive interviewers.</p>
+          
+          <h4 class="text-white font-bold text-base mb-1">Core Technical Innovations:</h4>
+          <ul class="list-disc pl-5 space-y-1.5 mb-4 text-slate-300">
+            <li><strong>AI-Powered In-Memory Resume Parser:</strong> Parses batches of up to 30 PDF, DOCX, and JPEG files using Groq Cloud LLMs into validated JSON candidate profiles with multi-API key failover to bypass rate limits.</li>
+            <li><strong>Multi-Vector Duplicate Detection:</strong> Detects reapplications across jobs via case-insensitive email matching, phone number normalization, and binary CV comparison, preserving candidate cross-job history.</li>
+            <li><strong>Google Calendar API v3 Service Account Integration:</strong> Queries mutual free slots across multi-interviewer panels, generates Google Meet links, dispatches calendar invites, and auto-advances pipeline stages.</li>
+            <li><strong>Interview Evaluation System:</strong> Secure token-based deep links, panel-scoped access control, dynamic feedback forms, and an AI summarizer synthesizing multi-round notes for hiring directors.</li>
+            <li><strong>Enterprise Reliability:</strong> Passport JWT auth, granular RBAC guards, rate-limited public career portals, Seq structured logging, and OpenAPI/Swagger documentation.</li>
+          </ul>
+        `,
+        badges: ['NestJS', 'TypeScript', 'PostgreSQL', 'Sequelize', 'Nx Monorepo', 'Groq LLM', 'Google Calendar API', 'Seq Logging'],
+        actions: `
+          <span class="text-xs text-slate-400 font-mono">Folio3 Internal Service (Production)</span>
+        `
+      },
+      novexa: {
+        tag: 'Full-Stack MERN E-Commerce Platform',
+        title: 'NOVEXA – E-Commerce Platform',
+        subtitle: 'React.js • Node.js • Express.js • MongoDB • Safepay • Cloudinary',
+        img: 'Novexa.png',
+        body: `
+          <h4 class="text-white font-bold text-base mb-1">Architecture & Engineering Overview</h4>
+          <p class="mb-3">Architected a production-grade e-commerce application with a clean layered backend (routes → controllers → services → models) with dedicated middleware and validation layers.</p>
+          
+          <h4 class="text-white font-bold text-base mb-1">Key Technical Solutions:</h4>
+          <ul class="list-disc pl-5 space-y-1.5 mb-4 text-slate-300">
+            <li><strong>Race-Condition Safe Checkout:</strong> Eliminated overselling during high concurrent flash sales using MongoDB atomic <code>findOneAndUpdate</code> operations.</li>
+            <li><strong>State-Machine Order Lifecycle:</strong> Complete order lifecycle with status tracking, cancellations, and automatic stock restoration.</li>
+            <li><strong>Third-Party Integrations:</strong> Safepay payment gateway, Cloudinary image hosting, and Nodemailer transactional receipts.</li>
+            <li><strong>Comprehensive Features:</strong> User authentication with JWT/bcrypt, product reviews & ratings, persistent wishlist, and advanced multi-facet search/filtering.</li>
+          </ul>
+        `,
+        badges: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'Safepay', 'Cloudinary', 'JWT'],
+        actions: `
+          <a href="https://github.com/codecraft-by-ifra/NOVEXA" target="_blank" rel="noopener" class="px-4 py-2 rounded-lg bg-cyan-400 text-black font-bold text-xs hover:brightness-110 transition flex items-center gap-1.5">
+            <i class="fab fa-github"></i> View GitHub Repo
+          </a>
+        `
+      },
+      smart: {
+        tag: 'Academic Automation Engine',
+        title: 'Smart Lecture Scheduling System',
+        subtitle: 'Node.js • Express.js • MongoDB • JavaScript • Nodemailer',
+        img: 'smart.png',
+        body: `
+          <h4 class="text-white font-bold text-base mb-1">Architecture & Engineering Overview</h4>
+          <p class="mb-3">A specialized academic timetable management platform designed to automate lecture allocation, resolve room assignment collisions, and maintain faculty availability.</p>
+          
+          <h4 class="text-white font-bold text-base mb-1">Key Technical Solutions:</h4>
+          <ul class="list-disc pl-5 space-y-1.5 mb-4 text-slate-300">
+            <li><strong>Automated Conflict Detection:</strong> Algorithm detecting overlap across rooms, instructor schedules, and student class cohorts.</li>
+            <li><strong>Role-Based Access:</strong> Granular views and permissions for administrative officers, department heads, and students.</li>
+            <li><strong>Real-Time Alerts:</strong> Automated Nodemailer notifications sent to instructors and students whenever room or timing changes occur.</li>
+          </ul>
+        `,
+        badges: ['Node.js', 'Express.js', 'MongoDB', 'JavaScript', 'Nodemailer', 'RBAC'],
+        actions: `
+          <a href="https://github.com/codecraft-by-ifra/Smart-Lecture-System.git" target="_blank" rel="noopener" class="px-4 py-2 rounded-lg bg-cyan-400 text-black font-bold text-xs hover:brightness-110 transition flex items-center gap-1.5">
+            <i class="fab fa-github"></i> View GitHub Repo
+          </a>
+        `
+      }
+    };
+
+    function openProjectModal(key) {
+      const data = projectDetails[key];
+      if (!data) return;
+
+      document.getElementById('projModalTag').textContent = data.tag;
+      document.getElementById('projModalTitle').textContent = data.title;
+      document.getElementById('projModalSubtitle').textContent = data.subtitle;
+      document.getElementById('projModalImg').src = data.img;
+      document.getElementById('projModalBody').innerHTML = data.body;
+
+      const badgesContainer = document.getElementById('projModalBadges');
+      badgesContainer.innerHTML = '';
+      data.badges.forEach(b => {
+        const span = document.createElement('span');
+        span.className = 'px-2.5 py-1 rounded-md text-xs font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300';
+        span.textContent = b;
+        badgesContainer.appendChild(span);
+      });
+
+      document.getElementById('projModalActions').innerHTML = data.actions;
+
+      const modal = document.getElementById('projectModal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProjectModal() {
+      document.getElementById('projectModal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('projectModal').addEventListener('click', (e) => {
+      if (e.target.id === 'projectModal') closeProjectModal();
+    });
+
+    // Close modals on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeCertModal();
+        closeProjectModal();
+      }
+    });
+
+    /* =========================================================================
+       9. CONTACT FORM AJAX SUBMISSION
+       ========================================================================= */
+    const contactForm = document.getElementById('contactForm');
+    const formStatus = document.getElementById('formStatus');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-          behavior: 'smooth'
-        });
-      });
-    });
-    
-    const fadeElements = document.querySelectorAll('.fade-in');
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('appear');
+        const origBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Sending...</span>';
+        submitBtn.disabled = true;
+
+        try {
+          const formData = new FormData(contactForm);
+          const response = await fetch(contactForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+          });
+
+          if (response.ok) {
+            formStatus.className = 'p-4 rounded-xl text-center text-sm font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+            formStatus.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Thank you! Your message has been sent successfully.';
+            formStatus.classList.remove('hidden');
+            contactForm.reset();
+            setTimeout(() => { formStatus.classList.add('hidden'); }, 6000);
+          } else {
+            throw new Error('Submission error');
+          }
+        } catch (err) {
+          formStatus.className = 'p-4 rounded-xl text-center text-sm font-medium bg-rose-500/20 text-rose-300 border border-rose-500/30';
+          formStatus.innerHTML = '<i class="fas fa-triangle-exclamation mr-2"></i> There was an issue sending your message. Please email directly at codecraftbyifrah@gmail.com.';
+          formStatus.classList.remove('hidden');
+        } finally {
+          submitBtn.innerHTML = origBtnText;
+          submitBtn.disabled = false;
         }
       });
-    }, { threshold: 0.1 });
-    
-    fadeElements.forEach(element => {
-      observer.observe(element);
-    });
-    
-    const typewriter = document.querySelector('.typewriter');
-    const text = "Full Stack Developer";
-    let index = 0;
-    
-    function type() {
-      if (index < text.length) {
-        typewriter.textContent += text.charAt(index);
-        index++;
-        setTimeout(type, 100);
+    }
+  
+    /* =========================================================================
+       THEME TOGGLE SYSTEM (DARK & LIGHT)
+       ========================================================================= */
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const mobileThemeToggleBtn = document.getElementById('mobileThemeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeToggleText = document.getElementById('themeToggleText');
+    const mobileThemeIcon = document.getElementById('mobileThemeIcon');
+    const mobileThemeText = document.getElementById('mobileThemeText');
+
+    function applyTheme(theme) {
+      if (theme === 'light') {
+        document.documentElement.classList.add('light-theme');
+        document.body.classList.add('light-theme');
+        if (themeIcon) {
+          themeIcon.className = 'fas fa-moon text-indigo-500 text-sm';
+        }
+        if (themeToggleText) themeToggleText.textContent = 'Light';
+        if (mobileThemeIcon) mobileThemeIcon.className = 'fas fa-moon text-indigo-400';
+        if (mobileThemeText) mobileThemeText.textContent = 'Light Mode';
+        localStorage.setItem('portfolio-theme', 'light');
+        if (window.update3DTheme) window.update3DTheme('light');
       } else {
-        setTimeout(() => {
-          typewriter.textContent = "";
-          index = 0;
-          type();
-        }, 2000);
+        document.documentElement.classList.remove('light-theme');
+        document.body.classList.remove('light-theme');
+        if (themeIcon) {
+          themeIcon.className = 'fas fa-sun text-amber-400 text-sm';
+        }
+        if (themeToggleText) themeToggleText.textContent = 'Dark';
+        if (mobileThemeIcon) mobileThemeIcon.className = 'fas fa-sun text-amber-400';
+        if (mobileThemeText) mobileThemeText.textContent = 'Dark Mode';
+        localStorage.setItem('portfolio-theme', 'dark');
+        if (window.update3DTheme) window.update3DTheme('dark');
       }
     }
-    
-    setTimeout(type, 1000);
-    
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    window.addEventListener('scroll', () => {
-      let current = '';
-      
-      document.querySelectorAll('section').forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        
-        if (pageYOffset >= sectionTop - sectionHeight / 3) {
-          current = section.getAttribute('id');
-        }
-      });
-      
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').substring(1) === current) {
-          link.classList.add('active');
-        }
-      });
-    });
 
-const contactForm = document.getElementById('contact-form');
-const formSuccess = document.getElementById('form-success');
-const formError = document.getElementById('form-error');
+    const currentSavedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+    applyTheme(currentSavedTheme);
 
-if (contactForm) {
-  contactForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const submitButton = this.querySelector('button[type="submit"]');
-    const originalText = submitButton.textContent;
-    
-    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
-    submitButton.disabled = true;
-    
-    try {
-      const formData = new FormData(this);
-      const response = await fetch(this.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        const isCurrentlyLight = document.body.classList.contains('light-theme');
+        applyTheme(isCurrentlyLight ? 'dark' : 'light');
+        showToast(isCurrentlyLight ? 'Dark Cyber mode enabled' : 'Light Executive mode enabled');
       });
-      
-      if (response.ok) {
-
-        formSuccess.classList.remove('hidden');
-        formError.classList.add('hidden');
-        this.reset();
-        
-        setTimeout(() => {
-          formSuccess.classList.add('hidden');
-        }, 5000);
-      } else {
-        throw new Error('Form submission failed');
-      }
-    } catch (error) {
-      formError.classList.remove('hidden');
-      formSuccess.classList.add('hidden');
-    } finally {
-      submitButton.innerHTML = originalText;
-      submitButton.disabled = false;
     }
-  });
-}
+
+    if (mobileThemeToggleBtn) {
+      mobileThemeToggleBtn.addEventListener('click', () => {
+        const isCurrentlyLight = document.body.classList.contains('light-theme');
+        applyTheme(isCurrentlyLight ? 'dark' : 'light');
+        showToast(isCurrentlyLight ? 'Dark Cyber mode enabled' : 'Light Executive mode enabled');
+      });
+    }
+
+    /* =========================================================================
+       CERTIFICATE 1-ROW SLIDER LOGIC & PROGRESS BAR
+       ========================================================================= */
+    const certsTrack = document.getElementById('certsTrack');
+    const certSlidePrev = document.getElementById('certSlidePrev');
+    const certSlideNext = document.getElementById('certSlideNext');
+    const certSlideBar = document.getElementById('certSlideBar');
+    const certSlideCounter = document.getElementById('certSlideCounter');
+
+    if (certsTrack && certSlidePrev && certSlideNext) {
+      certSlidePrev.addEventListener('click', () => {
+        certsTrack.scrollBy({ left: -380, behavior: 'smooth' });
+      });
+
+      certSlideNext.addEventListener('click', () => {
+        certsTrack.scrollBy({ left: 380, behavior: 'smooth' });
+      });
+
+      function updateSlideBar() {
+        const maxScroll = certsTrack.scrollWidth - certsTrack.clientWidth;
+        const currentScroll = certsTrack.scrollLeft;
+        const scrollPercent = maxScroll > 0 ? (currentScroll / maxScroll) : 0;
+        
+        const minW = 25;
+        const barW = minW + (100 - minW) * scrollPercent;
+        if (certSlideBar) {
+          certSlideBar.style.width = barW + '%';
+        }
+
+        const visibleCards = certsTrack.querySelectorAll('.cert-card:not([style*="display: none"])');
+        const cardWidth = 380;
+        const activeIdx = Math.min(visibleCards.length, Math.max(1, Math.round(currentScroll / cardWidth) + 1));
+        if (certSlideCounter && visibleCards.length > 0) {
+          certSlideCounter.textContent = `${activeIdx} of ${visibleCards.length}`;
+        }
+      }
+
+      certsTrack.addEventListener('scroll', updateSlideBar);
+
+      // Drag to scroll functionality
+      let isDown = false;
+      let startX;
+      let scrollLeft;
+
+      certsTrack.addEventListener('mousedown', (e) => {
+        isDown = true;
+        certsTrack.classList.add('cursor-grabbing');
+        startX = e.pageX - certsTrack.offsetLeft;
+        scrollLeft = certsTrack.scrollLeft;
+      });
+
+      certsTrack.addEventListener('mouseleave', () => {
+        isDown = false;
+        certsTrack.classList.remove('cursor-grabbing');
+      });
+
+      certsTrack.addEventListener('mouseup', () => {
+        isDown = false;
+        certsTrack.classList.remove('cursor-grabbing');
+      });
+
+      certsTrack.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - certsTrack.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        certsTrack.scrollLeft = scrollLeft - walk;
+      });
+
+      setTimeout(updateSlideBar, 300);
+    }
+
   </script>
 </body>
+
 </html>
