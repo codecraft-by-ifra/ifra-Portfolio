@@ -537,6 +537,51 @@
       color: #1e293b !important;
       border-color: #cbd5e1 !important;
     }
+
+    /* Floating Badges in Light Theme */
+    body.light-theme .hero-floating-badge {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+    }
+    body.light-theme .hero-floating-badge .badge-title {
+      color: #0f172a !important;
+    }
+    body.light-theme .hero-floating-badge .badge-subtitle {
+      color: #0284c7 !important;
+    }
+    body.light-theme .photo-folio-badge {
+      background-color: #ffffff !important;
+      color: #0284c7 !important;
+      border-color: #0284c7 !important;
+    }
+
+    /* Social Icon Buttons in Light Theme */
+    body.light-theme a.w-11,
+    body.light-theme button.w-11 {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #334155 !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+    }
+    body.light-theme a.w-11:hover,
+    body.light-theme button.w-11:hover {
+      background-color: #e0f2fe !important;
+      border-color: #0284c7 !important;
+      color: #0284c7 !important;
+    }
+
+    /* Additional Accent Colors in Light Theme */
+    body.light-theme .text-rose-300 {
+      color: #e11d48 !important;
+    }
+    body.light-theme .text-pink-400 {
+      color: #db2777 !important;
+    }
+    body.light-theme .text-indigo-400,
+    body.light-theme .text-indigo-500 {
+      color: #4f46e5 !important;
+    }
 </style>
 </head>
 
@@ -774,7 +819,7 @@
                     class="relative w-48 h-56 sm:w-56 sm:h-64 object-cover rounded-2xl shadow-xl border border-cyan-400/30" />
 
                   <div
-                    class="absolute -bottom-3 -right-3 px-3 py-1 rounded-lg bg-slate-950 border border-cyan-400 text-cyan-400 text-xs font-mono font-bold shadow-lg flex items-center gap-1.5">
+                    class="absolute -bottom-3 -right-3 px-3 py-1 rounded-lg bg-slate-950 border border-cyan-400 text-cyan-400 text-xs font-mono font-bold shadow-lg flex items-center gap-1.5 photo-folio-badge">
                     <i class="fas fa-check-circle text-cyan-400"></i> Folio3
                   </div>
                 </div>
@@ -805,28 +850,32 @@
               </div>
             </div>
 
-            <!-- Floating mini badge 1 -->
-            <div
-              class="absolute -top-4 -left-4 p-3 rounded-xl bg-slate-900/90 border border-slate-700 backdrop-blur-md shadow-xl hidden sm:flex items-center gap-2.5 animate-float">
-              <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
-                <i class="fas fa-cloud text-sm"></i>
-              </div>
-              <div class="text-left">
-                <div class="text-[11px] font-bold text-white">Google Cloud</div>
-                <div class="text-[9px] text-slate-400">Certified Data Eng 2026</div>
+            <!-- Floating badge 1: Google Cloud -->
+            <div class="absolute -top-6 -left-4 sm:-left-8 z-30 pointer-events-auto" style="transform: translateZ(65px);">
+              <div
+                class="hero-floating-badge p-3 sm:p-3.5 rounded-2xl bg-slate-900/95 border border-cyan-400/50 backdrop-blur-xl shadow-2xl flex items-center gap-3 animate-float transition-all duration-300">
+                <div class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0 shadow-inner">
+                  <i class="fas fa-cloud text-base"></i>
+                </div>
+                <div class="text-left pr-1">
+                  <div class="badge-title text-xs font-bold text-white tracking-tight">Google Cloud</div>
+                  <div class="badge-subtitle text-[10px] font-mono text-cyan-300">Certified Data Eng (2026)</div>
+                </div>
               </div>
             </div>
 
-            <!-- Floating mini badge 2 -->
-            <div
-              class="absolute -bottom-4 -right-4 p-3 rounded-xl bg-slate-900/90 border border-slate-700 backdrop-blur-md shadow-xl hidden sm:flex items-center gap-2.5 animate-float"
-              style="animation-delay: 2.5s;">
-              <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-                <i class="fas fa-shield-halved text-sm"></i>
-              </div>
-              <div class="text-left">
-                <div class="text-[11px] font-bold text-white">Nx Monorepo</div>
-                <div class="text-[9px] text-slate-400">Microservice Architecture</div>
+            <!-- Floating badge 2: Folio3 Microservice / Nx Monorepo -->
+            <div class="absolute -bottom-6 -right-4 sm:-right-8 z-30 pointer-events-auto" style="transform: translateZ(65px);">
+              <div
+                class="hero-floating-badge p-3 sm:p-3.5 rounded-2xl bg-slate-900/95 border border-emerald-400/50 backdrop-blur-xl shadow-2xl flex items-center gap-3 animate-float transition-all duration-300"
+                style="animation-delay: 2.5s;">
+                <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 shadow-inner">
+                  <i class="fas fa-shield-halved text-base"></i>
+                </div>
+                <div class="text-left pr-1">
+                  <div class="badge-title text-xs font-bold text-white tracking-tight">Folio3 Microservice</div>
+                  <div class="badge-subtitle text-[10px] font-mono text-emerald-300">Nx Monorepo & NestJS</div>
+                </div>
               </div>
             </div>
 
