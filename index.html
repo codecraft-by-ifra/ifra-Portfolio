@@ -256,7 +256,13 @@
     }
 
     /* Smooth transitions */
-    body, .glass-card, header#mainHeader, footer, button, input, textarea {
+    body,
+    .glass-card,
+    header#mainHeader,
+    footer,
+    button,
+    input,
+    textarea {
       transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -347,7 +353,7 @@
       box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.08) !important;
     }
 
-    body.light-theme .animated-border > div {
+    body.light-theme .animated-border>div {
       background: #ffffff !important;
     }
 
@@ -544,12 +550,15 @@
       border-color: #cbd5e1 !important;
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
     }
+
     body.light-theme .hero-floating-badge .badge-title {
       color: #0f172a !important;
     }
+
     body.light-theme .hero-floating-badge .badge-subtitle {
       color: #0284c7 !important;
     }
+
     body.light-theme .photo-folio-badge {
       background-color: #ffffff !important;
       color: #0284c7 !important;
@@ -564,6 +573,7 @@
       color: #334155 !important;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
     }
+
     body.light-theme a.w-11:hover,
     body.light-theme button.w-11:hover {
       background-color: #e0f2fe !important;
@@ -575,14 +585,16 @@
     body.light-theme .text-rose-300 {
       color: #e11d48 !important;
     }
+
     body.light-theme .text-pink-400 {
       color: #db2777 !important;
     }
+
     body.light-theme .text-indigo-400,
     body.light-theme .text-indigo-500 {
       color: #4f46e5 !important;
     }
-</style>
+  </style>
 </head>
 
 <body class="text-slate-100 antialiased selection:bg-cyan-500 selection:text-black">
@@ -849,36 +861,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Floating badge 1: Google Cloud -->
-            <div class="absolute -top-6 -left-4 sm:-left-8 z-30 pointer-events-auto" style="transform: translateZ(65px);">
-              <div
-                class="hero-floating-badge p-3 sm:p-3.5 rounded-2xl bg-slate-900/95 border border-cyan-400/50 backdrop-blur-xl shadow-2xl flex items-center gap-3 animate-float transition-all duration-300">
-                <div class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0 shadow-inner">
-                  <i class="fas fa-cloud text-base"></i>
-                </div>
-                <div class="text-left pr-1">
-                  <div class="badge-title text-xs font-bold text-white tracking-tight">Google Cloud</div>
-                  <div class="badge-subtitle text-[10px] font-mono text-cyan-300">Certified Data Eng (2026)</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Floating badge 2: Folio3 Microservice / Nx Monorepo -->
-            <div class="absolute -bottom-6 -right-4 sm:-right-8 z-30 pointer-events-auto" style="transform: translateZ(65px);">
-              <div
-                class="hero-floating-badge p-3 sm:p-3.5 rounded-2xl bg-slate-900/95 border border-emerald-400/50 backdrop-blur-xl shadow-2xl flex items-center gap-3 animate-float transition-all duration-300"
-                style="animation-delay: 2.5s;">
-                <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 shadow-inner">
-                  <i class="fas fa-shield-halved text-base"></i>
-                </div>
-                <div class="text-left pr-1">
-                  <div class="badge-title text-xs font-bold text-white tracking-tight">Folio3 Microservice</div>
-                  <div class="badge-subtitle text-[10px] font-mono text-emerald-300">Nx Monorepo & NestJS</div>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
 
@@ -2220,10 +2202,9 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="border-t border-slate-900 bg-[#02050c] py-12 px-6 lg:px-12 relative z-10">
-    <div
-      class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-      <div class="space-y-1">
+  <footer class="border-t border-slate-800/80 bg-[#02050c] py-5 px-6 lg:px-12 relative z-10">
+    <div class="max-w-7xl mx-auto min-h-12 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+      <div class="flex flex-col justify-center space-y-1">
         <div class="flex items-center justify-center md:justify-start gap-2 text-lg font-bold text-white">
           <span>IFRA</span>
           <span class="text-cyan-400">MUNAWAR</span>
@@ -2232,17 +2213,8 @@
         </p>
       </div>
 
-      <div class="flex items-center gap-4 text-slate-400 text-sm">
-        <a href="#home" class="hover:text-cyan-400 transition">Back to Top</a>
-        <span>•</span>
-        <a href="CV.pdf" download class="hover:text-cyan-400 transition">Download CV</a>
-        <span>•</span>
-        <a href="https://github.com/codecraft-by-ifra" target="_blank" rel="noopener"
-          class="hover:text-cyan-400 transition">GitHub</a>
-      </div>
-
-      <div class="text-xs text-slate-500 font-mono">
-        © 2026 Ifra Munawar. Built with clean architecture & 3D WebGL.
+      <div class="flex flex-col items-center md:items-end justify-center gap-2 text-[11px] text-slate-500 font-mono">
+          © 2026 Ifra Munawar
       </div>
     </div>
   </footer>
@@ -2909,7 +2881,7 @@
         }
       });
     }
-  
+
     /* =========================================================================
        THEME TOGGLE SYSTEM (DARK & LIGHT)
        ========================================================================= */
@@ -2987,7 +2959,7 @@
         const maxScroll = certsTrack.scrollWidth - certsTrack.clientWidth;
         const currentScroll = certsTrack.scrollLeft;
         const scrollPercent = maxScroll > 0 ? (currentScroll / maxScroll) : 0;
-        
+
         const minW = 25;
         const barW = minW + (100 - minW) * scrollPercent;
         if (certSlideBar) {
