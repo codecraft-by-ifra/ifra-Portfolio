@@ -2925,7 +2925,7 @@
       themeToggleBtn.addEventListener('click', () => {
         const isCurrentlyLight = document.body.classList.contains('light-theme');
         applyTheme(isCurrentlyLight ? 'dark' : 'light');
-        showToast(isCurrentlyLight ? 'Dark Cyber mode enabled' : 'Light Executive mode enabled');
+        
       });
     }
 
@@ -2933,7 +2933,6 @@
       mobileThemeToggleBtn.addEventListener('click', () => {
         const isCurrentlyLight = document.body.classList.contains('light-theme');
         applyTheme(isCurrentlyLight ? 'dark' : 'light');
-        showToast(isCurrentlyLight ? 'Dark Cyber mode enabled' : 'Light Executive mode enabled');
       });
     }
 
